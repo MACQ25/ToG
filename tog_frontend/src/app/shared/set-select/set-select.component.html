@@ -1,0 +1,18 @@
+<div class="content">
+    <mat-form-field>
+    <mat-label>Select an option</mat-label>
+    <mat-select [(value)]="selected">
+        <mat-option>None</mat-option>
+        @for(set of list; track set.value){
+        <mat-option [value]="set.value"> 
+            <div class="option-container">
+            <mat-icon [svgIcon]="set.icon"></mat-icon>
+            <span>{{ set.text }}</span>
+            </div> 
+        </mat-option>
+        }
+    </mat-select>
+    </mat-form-field>
+
+    <p>You selected: {{selected}}</p>
+</div>

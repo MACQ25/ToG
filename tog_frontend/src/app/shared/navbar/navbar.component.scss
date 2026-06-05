@@ -1,0 +1,44 @@
+:host {
+  .mat-toolbar {
+    background-color: #006a6a;
+    color: #ffffff;
+  }
+}
+
+#nav-marg{
+  margin-bottom: 20px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-button-row {
+  max-width: 600px;
+  display: flex;
+  gap: 10px;
+}
+
+.title-flex{
+  display: flex;
+  gap: 10px;
+}
+
+section {
+  display: flex;
+  align-items: center;
+}
+
+.app-title{
+  font-family: "Goudy Medieval";
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+}
+
+.app-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+

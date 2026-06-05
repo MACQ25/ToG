@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-set-select',
   imports: [MatFormFieldModule, MatSelectModule, MatIconModule, FormsModule],
   templateUrl: './set-select.component.html',
-  styleUrl: './set-select.component.css'
+  styleUrl: './set-select.component.scss'
 })
 export class SetSelectComponent {
 

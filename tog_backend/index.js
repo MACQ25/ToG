@@ -2,23 +2,21 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+const connectDB = require('./config/db');
 
 app.use(cors());
-app.use(express.json());              
+app.use(express.json());
+connectDB();              
 
 app.get('/', (req, res) => {
   res.send('Hello from Express + Node!');
 });
 
 
-mongoose.connect('mongodb://localhost:27017/mtgdb')
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ Connection error:', err));
 
-
+/*
 const SetSchema = new mongoose.Schema({}, { strict: false }); 
 const Set = mongoose.model('set', SetSchema, 'sets');
-
 
 app.get('/api/bsets', async (req, res) => {
   try {
@@ -37,7 +35,7 @@ app.get('/api/bsets', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+*/
 
 app.listen(3000, () => {
   console.log('Server running on port 3000');

@@ -1,0 +1,36 @@
+<mat-card class="auth-card" appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Register</mat-card-title>
+    </mat-card-header>
+    <div class="divider-spacing">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                    placeholder="Ex. pat@example.com">
+                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+                <mat-error>Please enter a valid email address</mat-error>
+                }
+                @if (emailFormControl.hasError('required')) {
+                <mat-error>Email is <strong>required</strong></mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput [formControl]="passwordFormControl" [errorStateMatcher]="matcher">
+                @if (passwordFormControl.hasError('email') && !passwordFormControl.hasError('required')) {
+                <mat-error>Please enter a valid password</mat-error>
+                }
+                @if (passwordFormControl.hasError('required')) {
+                <mat-error>Password is <strong>required</strong></mat-error>
+                }
+            </mat-form-field>
+            <div id="submit-div">
+                <button matButton="filled" type="submit">Submit</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

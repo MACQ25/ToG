@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$orange-palette,
+  )
+));
+
+@font-face {
+  font-family: 'Goudy Medieval';
+  src: url('assets/fonts/GoudyMediaevalRegular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Goudy Medieval';
+  src: url('assets/fonts/GoudyMediaevalDemiBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Goudy Medieval';
+  src: url('assets/fonts/GoudyMedievalAlternate.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+
+html {
+  @include mat.all-component-themes($theme);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: black; color: white;}

@@ -1,0 +1,27 @@
+<mat-card class="auth-card" appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <div class="divider-spacing">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                    placeholder="Ex. pat@example.com">
+                <mat-hint>Errors appear instantly!</mat-hint>
+                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+                <mat-error>Please enter a valid email address</mat-error>
+                }
+                @if (emailFormControl.hasError('required')) {
+                <mat-error>Email is <strong>required</strong></mat-error>
+                }
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+
+

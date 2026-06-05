@@ -1,13 +1,27 @@
-<mat-toolbar>
-  <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
-</mat-toolbar>
+<div id="nav-marg">
+  <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+      
+  <mat-toolbar>  
+    <section class="title-flex">
+      <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="app-title"><a routerLink="/">The Old Gathering</a></span>
+    </section>
+    <span class="example-spacer"></span>
+    <section>
+      <div class="example-button-row">
+        <button matButton="elevated" aria-label="Login button" routerLink="auth/login">
+          Login
+        </button>
+        <button matButton="elevated" aria-label="Register Button" routerLink="auth/register">
+          Register
+        </button>
+      </div>
+    </section>
+  </mat-toolbar>
+</div>

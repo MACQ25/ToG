@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { CurseValidation, PasswordStrength } from '../../../core/validation/custom-validation';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -16,8 +17,34 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-    emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-    passwordFormControl = new FormControl('', [Validators.required]);
+    registerForm = new FormGroup({
+      userName: new FormControl('', [Validators.required, CurseValidation]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, PasswordStrength])
+    })
 
     matcher = new MyErrorStateMatcher();
+
+    async submitAccount(): Promise<void> {
+      console.log(      this.registerForm.value.userName ?? '',
+      this.registerForm.value.email ?? '',
+      this.registerForm.value.password ?? '')
+
+    /*
+    await this.registry.register(
+      this.registerForm.value.userName ?? '',
+      this.registerForm.value.email ?? '',
+      this.registerForm.value.password ?? '',
+      false
+    ).subscribe({
+      next: res => this.router.navigate(['/auth/login']),
+      //res => console.log('Response:', res),
+      error: err => {
+        console.error('Error:', err);
+        this.errors = err.error
+      }
+    }
+    );
+    */
+  }
 }

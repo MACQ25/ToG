@@ -1,6 +1,17 @@
 #submit-div {
   display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    
+    mat-form-field {
+        margin-bottom: 0;
+    }
 }
 
 .auth-card {
@@ -20,4 +31,12 @@
 
 .divider-spacing{
   margin: 20px 0px;
+}
+
+mat-card-footer{
+  padding-bottom: 10px;
+}
+
+mat-card-footer p{
+  text-align: center;
 }

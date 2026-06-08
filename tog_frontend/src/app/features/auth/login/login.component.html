@@ -9,18 +9,29 @@
         <form class="example-form">
             <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
-                <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                <input type="email" matInput [formControl]="loginForm.controls.email" [errorStateMatcher]="matcher"
                     placeholder="Ex. pat@example.com">
-                <mat-hint>Errors appear instantly!</mat-hint>
-                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-                <mat-error>Please enter a valid email address</mat-error>
-                }
-                @if (emailFormControl.hasError('required')) {
-                <mat-error>Email is <strong>required</strong></mat-error>
-                }
+                <mat-error><app-errorlabel [control]="loginForm.controls.email"></app-errorlabel></mat-error>
             </mat-form-field>
+
+
+            <mat-form-field class="example-full-width" subscriptSizing="dynamic">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput [formControl]="loginForm.controls.password" [errorStateMatcher]="matcher">
+                <mat-error><app-errorlabel [control]="loginForm.controls.password"></app-errorlabel></mat-error>
+            </mat-form-field>
+
+            <div id="submit-div">
+                <button matButton="filled" type="submit" [disabled]="loginForm.invalid">Submit</button>
+            </div>
         </form>
     </mat-card-content>
+        <div class="divider-spacing">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-footer>
+        <p>Don't have an account yet? register <a routerLink="../register">here</a></p>
+    </mat-card-footer>
 </mat-card>
 
 

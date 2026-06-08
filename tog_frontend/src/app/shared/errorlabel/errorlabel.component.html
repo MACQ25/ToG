@@ -1,0 +1,15 @@
+@if(control.errors && control.touched) {
+    @if((control.errors | keyvalue).length > 1) {
+        <span class="error-text">Errors have been found:</span>
+        <ul>
+        @for(error of control.errors | keyvalue; track error.key) {
+            @if(error.key !== 'passwordAny'){
+                <li><span class="error-text">{{ getErrorMessage(error.key, error.value) }}</span></li>
+            }
+        }
+        </ul>
+    } @else {
+        @let firstError = (control.errors | keyvalue)[0];
+        <span class="error-text">{{ getErrorMessage(firstError.key, firstError.value) }}</span>
+    }
+}

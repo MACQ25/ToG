@@ -18,11 +18,14 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { ErrorlabelComponent } from '../../shared/errorlabel/errorlabel.component';
+import { RouterLink } from '@angular/router';
 
 
 @NgModule({
   declarations: [LoginComponent, RegisterComponent],
   imports: [
+    RouterLink,
     FormsModule,
     MatFormFieldModule, 
     MatInputModule,
@@ -32,7 +35,8 @@ import { MatButtonModule } from '@angular/material/button';
     AuthRoutingModule,
     MatListModule,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    ErrorlabelComponent
   ],
    providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}

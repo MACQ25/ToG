@@ -1,3 +1,9 @@
+#submit-div {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
 .auth-card{
     margin: auto;
     max-width: 400px;
@@ -16,4 +22,12 @@
 
 .divider-spacing{
   margin: 20px 0px;
+}
+
+mat-card-footer{
+  padding-bottom: 10px;
+}
+
+mat-card-footer p{
+  text-align: center;
 }

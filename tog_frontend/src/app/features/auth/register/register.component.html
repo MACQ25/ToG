@@ -6,31 +6,38 @@
         <mat-divider></mat-divider>
     </div>
     <mat-card-content>
-        <form class="example-form">
+        <form class="example-form" [formGroup]="registerForm" (ngSubmit)="submitAccount()">
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Username</mat-label>
+                <input type="text" matInput [formControl]="registerForm.controls.userName" [errorStateMatcher]="matcher">
+                <mat-error><app-errorlabel [control]="registerForm.controls.userName"></app-errorlabel></mat-error>
+            </mat-form-field>
+
+
             <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
-                <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                <input type="email" matInput [formControl]="registerForm.controls.email" [errorStateMatcher]="matcher"
                     placeholder="Ex. pat@example.com">
-                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-                <mat-error>Please enter a valid email address</mat-error>
-                }
-                @if (emailFormControl.hasError('required')) {
-                <mat-error>Email is <strong>required</strong></mat-error>
-                }
+                <mat-error><app-errorlabel [control]="registerForm.controls.email"></app-errorlabel></mat-error>
             </mat-form-field>
-            <mat-form-field class="example-full-width">
+
+
+            <mat-form-field class="example-full-width" subscriptSizing="dynamic">
                 <mat-label>Password</mat-label>
-                <input type="password" matInput [formControl]="passwordFormControl" [errorStateMatcher]="matcher">
-                @if (passwordFormControl.hasError('email') && !passwordFormControl.hasError('required')) {
-                <mat-error>Please enter a valid password</mat-error>
-                }
-                @if (passwordFormControl.hasError('required')) {
-                <mat-error>Password is <strong>required</strong></mat-error>
-                }
+                <input type="password" matInput [formControl]="registerForm.controls.password" [errorStateMatcher]="matcher">
+                <mat-error><app-errorlabel [control]="registerForm.controls.password"></app-errorlabel></mat-error>
             </mat-form-field>
+
             <div id="submit-div">
-                <button matButton="filled" type="submit">Submit</button>
+                <button matButton="filled" type="submit" [disabled]="registerForm.invalid">Submit</button>
             </div>
         </form>
     </mat-card-content>
+    <div class="divider-spacing">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-footer>
+        <p>Already have an account? login <a routerLink="../login">here</a></p>
+    </mat-card-footer>
 </mat-card>

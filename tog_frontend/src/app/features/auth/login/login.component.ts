@@ -6,10 +6,12 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  FormGroup,
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { CurseValidation, PasswordStrength } from '../../../core/validation/custom-validation';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -26,7 +28,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-    emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+    loginForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, PasswordStrength])
+    })
 
     matcher = new MyErrorStateMatcher();
 }

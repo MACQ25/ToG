@@ -1,27 +1,41 @@
 <div id="nav-marg">
-  <mat-menu #menu="matMenu">
-        <button mat-menu-item>Item 1</button>
-        <button mat-menu-item>Item 2</button>
-      </mat-menu>
-      
   <mat-toolbar>  
     <section class="title-flex">
-      <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-
       <span class="app-title"><a routerLink="/">The Old Gathering</a></span>
     </section>
     <span class="example-spacer"></span>
-    <section>
-      <div class="example-button-row">
-        <button matButton="elevated" aria-label="Login button" routerLink="auth/login">
-          Login
-        </button>
-        <button matButton="elevated" aria-label="Register Button" routerLink="auth/register">
-          Register
-        </button>
-      </div>
-    </section>
+    
+    @if(!status){
+      <section>
+        <div class="example-button-row">
+          <button matButton="elevated" aria-label="Login button" routerLink="auth/login">
+            Login
+          </button>
+          <button matButton="elevated" aria-label="Register Button" routerLink="auth/register">
+            Register
+          </button>
+        </div>
+      </section>
+    } @else {
+    <button matIconButton [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>dialpad</mat-icon>
+        <span>Redial</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Check voice mail</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Disable alerts</span>
+      </button>
+    </mat-menu>
+    }
+
+  
   </mat-toolbar>
 </div>

@@ -6,7 +6,7 @@
         <mat-divider></mat-divider>
     </div>
     <mat-card-content>
-        <form class="example-form">
+        <form class="example-form" [formGroup]="loginForm" (ngSubmit)="loginAccount()">
             <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
                 <input type="email" matInput [formControl]="loginForm.controls.email" [errorStateMatcher]="matcher"

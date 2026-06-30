@@ -3,11 +3,12 @@
  * https://namastedev.com/blog/implementing-modular-architectures-in-node-js-backends/
  */
 
-const express = require('express');
-const router = express.Router();
-const { registerAccount, loginAccount } = require('../controllers/accountController');
+import { Router } from 'express'
+import { registerAccount, loginAccount, accountTest } from '../controllers/accountController.js';
 
-router.post('/register', registerAccount);
-router.post('/login', loginAccount);
+let accountRouter = Router()
+    .get('/test', accountTest)
+    .post('/register', registerAccount)
+    .post('/login', loginAccount)
 
-module.exports = router;
+export { accountRouter }

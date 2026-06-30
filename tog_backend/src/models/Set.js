@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const SetSchema = new mongoose.Schema({}, { strict: false }); 
+const SetSchema = new Schema({}, { strict: false }); 
 
-const Set = mongoose.model('set', SetSchema, 'sets');
+const Set = model('set', SetSchema, 'sets');

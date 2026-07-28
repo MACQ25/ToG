@@ -1,2 +1,53 @@
-<app-navbar></app-navbar>
-<router-outlet />
+<div id="main-app">
+    <app-navbar></app-navbar>
+
+    <mat-sidenav-container class="sn-container">
+        <mat-sidenav #sidenav mode="side" opened="true"
+                     class="main-sidenav"
+                     [class.collapsed]="isCollapsed"
+                     [fixedInViewport]="true"
+                     [fixedTopGap]="64"
+                     [fixedBottomGap]="0">
+
+            <mat-nav-list>
+                <a mat-list-item routerLink="/" matTooltip="Home" [matTooltipDisabled]="!isCollapsed">
+                    <mat-icon matListItemIcon>home</mat-icon>
+                    @if (!isCollapsed) {
+                        <span matListItemTitle>Home</span>
+                    }
+                </a>
+
+                <a mat-list-item routerLink="/play" matTooltip="play" [matTooltipDisabled]="!isCollapsed">
+                    <mat-icon matListItemIcon svgIcon="pw-icon" class="cIcon" id="fIcon"></mat-icon>
+                    @if (!isCollapsed) {
+                        <span matListItemTitle>Play</span>
+                    }
+                </a>
+                
+                <a mat-list-item routerLink="/gallery" matTooltip="Gallery" [matTooltipDisabled]="!isCollapsed">
+                    <mat-icon matListItemIcon svgIcon="playing_cards" class="cIcon" ></mat-icon>
+                    @if (!isCollapsed) {
+                        <span matListItemTitle>Gallery</span>
+                    }
+                </a>
+                
+                <a mat-list-item routerLink="/settings" matTooltip="Settings" [matTooltipDisabled]="!isCollapsed">
+                    <mat-icon matListItemIcon>settings</mat-icon>
+                    @if (!isCollapsed) {
+                        <span matListItemTitle>Settings</span>
+                    }
+                </a>
+
+                <a mat-list-item matTooltip="hide side nav" [matTooltipDisabled]="!isCollapsed" (click)="isCollapsed = !isCollapsed">
+                    <mat-icon matListItemIcon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content [style.marginLeft.px]="isCollapsed ? 72 : 192">
+            <div id="main-outlet">
+                <router-outlet />
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

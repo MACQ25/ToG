@@ -13,7 +13,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CurseValidation, PasswordStrength } from '../../../core/validation/custom-validation';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/baseServices/auth.service';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -32,7 +32,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class LoginComponent {
     loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, PasswordStrength])
+      password: new FormControl('', [Validators.required, PasswordStrength]),
+      rememberMe: new FormControl(false)
     })
 
     matcher = new MyErrorStateMatcher();
@@ -46,7 +47,8 @@ export class LoginComponent {
     
       this.registry.login(
         this.loginForm.value.email ?? '',
-        this.loginForm.value.password ?? ''
+        this.loginForm.value.password ?? '',
+        this.loginForm.value.rememberMe ?? false
       ).subscribe({
         next: res =>  this.router.navigate(['/']),
 

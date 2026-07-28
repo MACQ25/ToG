@@ -4,11 +4,13 @@
  */
 
 import { Router } from 'express'
-import { registerAccount, loginAccount, accountTest } from '../controllers/accountController.js';
+import { registerAccount, loginAccount, rememberAccount, logout, accountTest } from '../controllers/accountController.js';
 
 let accountRouter = Router()
     .get('/test', accountTest)
     .post('/register', registerAccount)
     .post('/login', loginAccount)
+    .get('/remember', rememberAccount)
+    .get('/logout', logout)
 
 export { accountRouter }

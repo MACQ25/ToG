@@ -1,3 +1,34 @@
+#main-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%
+}
+
+#main-outlet{
+    margin: 10px;
+}
+
+app-navbar {
+  height: 64px;
+  display: block;
+  // if app-navbar's own internal template/CSS doesn't already
+  // stretch full width, add: width: 100%;
+}
+
+.sn-container {
+  flex: 1; // fills whatever height remains below the navbar
+}
+
+.main-sidenav {
+  width: 184px;
+  overflow-x: hidden;
+  transition: width 10s ease-in-out;
+
+  &.collapsed {
+    width: 64px;
+  }
+}
+
 
 // All below was for the select, remember to move when reimplemented
 
@@ -28,4 +59,12 @@ mat-icon svg {
 
 mat-icon svg path {
   fill: currentColor;
+}
+
+.cIcon{
+  color: white;
+}
+
+#fIcon svg{
+  width: 36px;
 }

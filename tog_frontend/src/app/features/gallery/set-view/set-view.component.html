@@ -1,0 +1,15 @@
+<p>set-view works!</p>
+<app-set-select></app-set-select>
+<p>Set selected: {{ selectServ.displayName() }}  
+    @if (selectServ.displayIcon(); as icon) {
+    <mat-icon [svgIcon]="icon"></mat-icon>
+    }
+</p> 
+<div>
+    <div class="gallery-view">
+        @for(card of cardsServ.cards(); track card.uuid){
+            <img src={{card.scryfallImageUrl}}>
+        }
+    </div>
+
+</div>

@@ -1,18 +1,17 @@
 <div class="content">
     <mat-form-field>
     <mat-label>Select an option</mat-label>
-    <mat-select [(value)]="selected">
+    <mat-select [value]="selectServ.selected()" (valueChange)="selectServ.selected.set($event)">
         <mat-option>None</mat-option>
-        @for(set of list; track set.value){
-        <mat-option [value]="set.value"> 
+        @for(set of selectServ.list; track set.id){
+        <mat-option [value]="set.id"> 
             <div class="option-container">
             <mat-icon [svgIcon]="set.icon"></mat-icon>
-            <span>{{ set.text }}</span>
+            <span>{{ set.name }}</span>
             </div> 
         </mat-option>
         }
     </mat-select>
     </mat-form-field>
 
-    <p>You selected: {{selected}}</p>
 </div>

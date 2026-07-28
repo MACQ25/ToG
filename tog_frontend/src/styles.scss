@@ -38,3 +38,30 @@ html {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: black; color: white;}
+
+:root {
+  @include mat.sidenav-overrides((
+    container-background-color: #029b9b,
+    container-text-color: #ffffff,
+    container-shape: square,
+  ));
+
+}
+
+.main-sidenav .mdc-list-item {
+  padding-inline-end: 0 !important;
+  padding-right: 0px !important;
+}
+
+.main-sidenav .mdc-list-item__content {
+  padding-inline-end: 0 !important;
+  padding-right: 0px !important;
+}
+
+.main-sidenav.collapsed .mdc-list-item__content {
+  display: none;
+}
+
+.main-sidenav.collapsed .mdc-list-item {
+  justify-content: center;
+}

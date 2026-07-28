@@ -4,7 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/baseServices/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +16,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class NavbarComponent {
 
   status: boolean = false
+  logoutF: any
 
   constructor(private auth: AuthService){}
 
@@ -23,7 +24,9 @@ export class NavbarComponent {
     this.auth.currentUser$.subscribe(state => {
       if (state){
         this.status = true
-      }
+        this.logoutF = ():void => this.auth.logout();
+      } else this.status = false;
     })
   }
+
 }

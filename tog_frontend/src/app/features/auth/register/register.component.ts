@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { CurseValidation, PasswordStrength } from '../../../core/validation/custom-validation';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/baseServices/auth.service';
 import { Router } from '@angular/router';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {

@@ -27,8 +27,10 @@ export async function createUserAccount(username, email, password) {
     return await User.insertOne( { username, email, password: hashedP } )
 }
 
-export async function loginUserAccount(email, password) {
+export async function loginUserAccount(email, password, remember) {
     const existingUser = await User.findOne({ email: email });
+
+    if (!existingUser) return { code: 401, message: "Invalid credentials", payload: {} }
 
     const login = await verifyPassword(password, existingUser.password)
 
@@ -39,7 +41,7 @@ export async function loginUserAccount(email, password) {
         email: existingUser.email
       };
 
-      const jToken = jwt.sign(userPayload, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const jToken = jwt.sign(userPayload, process.env.JWT_SECRET, { expiresIn: remember ? '10d' : '24h' });
 
       return { code: 200, message: "successful loggon", payload: { user: userPayload, token: jToken }}
     } 
@@ -47,4 +49,19 @@ export async function loginUserAccount(email, password) {
       return { code: 401, message: "Invalid credentials", payload: {} }
     }
 
+}
+
+export async function loginViaCookie(token) {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    const checkUser = await User.findById(decoded.id)
+    
+    if (checkUser) return true
+    
+    return false
+    
+  } catch(error){
+
+  }
 }

@@ -20,6 +20,7 @@ import {MatListModule} from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorlabelComponent } from '../../shared/errorlabel/errorlabel.component';
 import { RouterLink } from '@angular/router';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { RouterLink } from '@angular/router';
     MatListModule,
     MatDividerModule,
     MatButtonModule,
-    ErrorlabelComponent
+    ErrorlabelComponent,
+    MatCheckboxModule
   ],
    providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}

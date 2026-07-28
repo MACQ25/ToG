@@ -21,6 +21,8 @@
                 <mat-error><app-errorlabel [control]="loginForm.controls.password"></app-errorlabel></mat-error>
             </mat-form-field>
 
+            <mat-checkbox [formControl]="loginForm.controls.rememberMe">Remember Me</mat-checkbox>
+
             <div id="submit-div">
                 <button matButton="filled" type="submit" [disabled]="loginForm.invalid">Submit</button>
             </div>

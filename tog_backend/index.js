@@ -5,11 +5,20 @@ const app = express();
 import connectDB from './src/config/db.js';
 import { config } from 'dotenv';
 import { apiRouter } from './src/routes/routes.js';
+import cookieParser from 'cookie-parser'
 
 config({path: ".env"});
 
-app.use(cors());
+app.use(
+  cors(
+    {
+      origin: 'http://localhost:4200',
+      credentials: true
+    }
+  )
+);
 app.use(json());
+app.use(cookieParser())
 connectDB();              
 
 app.get('/', (req, res) => {

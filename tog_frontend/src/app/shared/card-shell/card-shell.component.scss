@@ -1,6 +1,18 @@
-.center-card{
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.center-card {
+  overflow-y: auto;
+  display: flex;
+  flex: 1;
+  min-height: 0;   // lets it fill remaining height without pushing past the viewport
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5%;
+  // no height:100vh
 }

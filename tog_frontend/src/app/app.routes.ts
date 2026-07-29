@@ -12,5 +12,9 @@ export const routes: Routes = [
     {
         path: 'gallery',
         loadChildren: () => import('./features/gallery/gallery.module').then(m => m.GalleryModule)
+    },
+    {
+        path: 'play',
+        loadChildren: () => import('./features/game/game.module').then(m => m.GameModule),
     }
 ];

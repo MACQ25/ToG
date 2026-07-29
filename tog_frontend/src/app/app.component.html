@@ -44,10 +44,8 @@
             </mat-nav-list>
         </mat-sidenav>
 
-        <mat-sidenav-content [style.marginLeft.px]="isCollapsed ? 72 : 192">
-            <div id="main-outlet">
-                <router-outlet />
-            </div>
+        <mat-sidenav-content [style.marginLeft.px]="isCollapsed ? 72 : 192" class="sidenav-content">
+            <router-outlet />
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

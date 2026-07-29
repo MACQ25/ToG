@@ -32,7 +32,7 @@ export async function getSetCards(code) {
                                 "scryfallId": "$$card.identifiers.scryfallId",
                                 "scryfallImageUrl": {
                                     $concat: [
-                                        "https://cards.scryfall.io/large/front/",
+                                        "https://cards.scryfall.io/normal/front/",
                                         { $substrCP: ["$$card.identifiers.scryfallId", 0, 1] },
                                         "/",
                                         { $substrCP: ["$$card.identifiers.scryfallId", 1, 1] },

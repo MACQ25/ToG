@@ -8,8 +8,7 @@
 <div>
     <div class="gallery-view">
         @for(card of cardsServ.cards(); track card.uuid){
-            <img src={{card.scryfallImageUrl}}>
+            <img src={{card.scryfallImageUrl}} class="imgView">
         }
     </div>
-
 </div>

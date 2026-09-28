@@ -31,12 +31,19 @@ $theme: mat.define-theme((
   font-style: italic;
 }
 
+@font-face {
+  font-family: 'Beleren';
+  src: url('assets/fonts/Beleren2016-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal
+}
+
 
 html {
   @include mat.all-component-themes($theme);
 }
 
-html, body { height: 100%; }
+html, body { height:100vh; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: black; color: white;}
 
 :root {
@@ -64,4 +71,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 
 .main-sidenav.collapsed .mdc-list-item {
   justify-content: center;
+}
+
+app-set-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    margin: 5vh 0 0 5vh;
 }

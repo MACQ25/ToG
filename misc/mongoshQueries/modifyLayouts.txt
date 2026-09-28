@@ -1,0 +1,22 @@
+db.sets.updateMany(
+  { "data.code": "TDM" },
+  [
+    {
+      $set: {
+        "data.cards": {
+          $map: {
+            input: "$data.cards",
+            as: "c",
+            in: {
+              $cond: [
+                { $eq: [ { $getField: { field: "layout", input: "$$c" } } , "adventure" ] },
+                { $setField: { field: "layout", input: "$$c", value: "omen" } },
+                "$$c"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+)

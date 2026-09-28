@@ -1,0 +1,51 @@
+@if(card(); as c){
+    <div class="imgDiv" >
+        <span class="cardname">{{ this.card().name }}</span>
+        <a [href]="url">
+            <img 
+                #cardElem1
+                [src]="c.scryfallImageUrl"
+                class="imgView"
+                [class.rotate-two-in]="type() === 1"
+            >
+        </a>
+        
+        @if(type() !== 0) {
+            <a [href]="url">
+            @if(type() === 1){
+                <img 
+                #cardElem2
+                [src]="c.otherFace!.scryfallImageUrl"
+                class="imgView rotate-two-out"
+                >
+            }
+            @else if(type() === 2 || type() === 6){
+                <img 
+                #cardElem2
+                [src]="c.otherFace!.scryfallImageUrl"
+                class="imgView sub-card {{ type() === 2 ? 'sub-a' : 'sub-b' }} hidden"
+                >
+            }
+            @else if(type() === 5){
+                <div #meldDiv class="mldParent hidden">
+                    <img [src]="c.otherFace!.frontTop" [class.focused]="c.scryfallImageUrl == c.otherFace!.frontTop" >
+                    <img [src]="c.otherFace!.backTop">
+                    <img [src]="c.otherFace!.frontBot" [class.focused]="c.scryfallImageUrl == c.otherFace!.frontBot">
+                    <img [src]="c.otherFace!.backBot">
+                    <img [src]="c.otherFace!.scryfallImageUrl">
+                </div>
+            }
+            </a>
+            <button #buttonElement matMiniFab class="flipButton {{type() !== 6 ? 'position-a' : 'position-b' }}" (click)="change()">
+                @if(iconType()){
+                    @if(oddIcon) {
+                        <mat-icon svgIcon="{{oddIcon}}"></mat-icon>
+                    }
+                    @else {
+                        <mat-icon>{{iconType()}}</mat-icon>
+                    }
+                } 
+            </button>
+        }
+    </div>
+}

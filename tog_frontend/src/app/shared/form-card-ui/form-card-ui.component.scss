@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
 }
 
 .center-card {
@@ -13,6 +12,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 5%;
   // no height:100vh
 }

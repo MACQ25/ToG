@@ -1,39 +1,25 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { SetsService } from './sets.service';
 import { Set } from '../../interfaces/set';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SetSelectService {
   
-  options = signal<object[]>([])
-  selected = signal<string|null>(null)
-  list: Set[] = [];
+  selected = signal<Set|null|undefined>(null)
+  list = signal<Set[]>([]);
+
+  setData = computed((): Set | undefined => {
+    return this.selected() ? this.list().find((elem) => elem.id === this.selected()?.id) : undefined
+  })
   
-  displayName = computed(() =>
-    this.selected()
-      ? (`${this.list.find((elem) => elem.id === this.selected())?.name ?? "none"} ` )
-      : "none"
-  );
-
-  displayIcon = computed(() =>
-    this.selected()
-      ? (this.list.find((elem) => elem.id === this.selected())?.icon)
-      : ""
-  );
-
-  setCode = computed(() => 
-    this.selected() 
-      ? (this.list.find((elem) => elem.id === this.selected())?.code)
-      : "" 
-  )
-
   constructor(private setService: SetsService){
     this.setService.listSets().subscribe(
       {
         next: res => { 
-          this.list = res
+          this.list.update(sets => res)
         },
         error: res => {} //console.error(res)
       }

@@ -38,6 +38,9 @@ export class AppComponent {
     // `iconRegistry.addSvgIcon('thumbs-up', sanitizer.bypassSecurityTrustResourceUrl('icon.svg'));`
     iconRegistry.addSvgIcon('playing_cards', sanitizer.bypassSecurityTrustResourceUrl('icons/playing_cards.svg'));
     iconRegistry.addSvgIcon('pw-icon', sanitizer.bypassSecurityTrustResourceUrl('icons/pw-icon.svg'));
+    // Really liked this design, remember to credit them if the site is ever uploaded
+    // https://www.reddit.com/r/magicTCG/comments/4dhkxa/my_hope_for_the_eldritch_moon_set_symbol/
+    iconRegistry.addSvgIcon('eldritch', sanitizer.bypassSecurityTrustResourceUrl('icons/meld-icon.svg'));
 
    }
 

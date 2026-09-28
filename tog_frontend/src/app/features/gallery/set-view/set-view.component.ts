@@ -4,10 +4,9 @@ import { SetSelectService } from '../../../core/services/cardServices/set-select
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CardsService } from '../../../core/services/cardServices/cards.service';
 
-
 @Component({
   selector: 'app-set-view',
-  imports: [SetSelectComponent, MatIconModule],
+  standalone: false,
   templateUrl: './set-view.component.html',
   styleUrl: './set-view.component.scss',
 })
@@ -15,8 +14,13 @@ export class SetViewComponent {
   
   constructor(public selectServ: SetSelectService, public cardsServ: CardsService){
       effect(() => {
-        let code = this.selectServ.setCode()
-        if (code) this.cardsServ.fetchSetGallery(code)
+        let code = this.selectServ.setData()?.code
+        if (code) {
+          this.cardsServ.fetchSetGallery(code);
+        } else{
+           this.cardsServ.cardsBase.set([]);
+           this.cardsServ.collectionFilter.set('');
+          }
       }
     )
   }

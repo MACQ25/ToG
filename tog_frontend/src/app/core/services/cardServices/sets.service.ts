@@ -28,7 +28,9 @@ export class SetsService {
               id: set._id,
               name: set.data.name,
               code: set.data.code,
-              icon: `${set.data.code.toLowerCase()}-icon`
+              icon: `${set.data.code.toLowerCase()}-icon`,
+              releaseDate: set.data.releaseDate,
+              font: new Date(set.data.releaseDate) <= new Date('2003-07-27') ? 'Goudy Medieval' : 'Beleren'
           }));
 
           const registrations = response.map((set: any) => {

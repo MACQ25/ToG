@@ -17,9 +17,5 @@ echo Launching Website
 wt -w 0 new-tab --title "TOG Frontend" --startingDirectory "%ROOT%tog_frontend" cmd /k "ng serve"
 echo Done!
 
-echo Running db GUI
-wt -w 0 new-tab --title "Mongo Express" cmd /k "docker run -it --rm --network mtg_rg_default --name mongo-express -p 8081:8081 -e ME_CONFIG_OPTIONS_EDITORTHEME=pastel-on-dark -e ME_CONFIG_BASICAUTH_USERNAME=admin -e ME_CONFIG_BASICAUTH_PASSWORD=%MONGO_PASS% mongo-express"
-echo Done!
-
 echo Script finished, ready to code!
 pause

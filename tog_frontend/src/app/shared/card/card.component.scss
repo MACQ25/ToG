@@ -1,0 +1,392 @@
+.imgDiv, .imgView, .full-meld, .full-unmeld {
+    position: relative;
+    max-height: 50vh;
+    min-width: 0vh;
+    display: inline-block;
+}
+
+
+.imgView {
+    display: block;
+    border-radius: 12px;
+}
+
+
+.cardname{
+    color: transparent;
+    position: absolute;
+    z-index: 20;
+}
+
+.sub-card {
+    position: absolute;
+    top: 0%;
+}
+
+.sub-a {
+    clip-path: inset(62% 50% 7% 5%);
+
+}
+
+.sub-b {
+    clip-path: inset(62% 6% 11% 49%);
+}
+
+
+.flipButton{
+    position: absolute;
+    margin: 0;
+    z-index: 10;
+
+    --mdc-fab-small-container-height: 3cqi;
+    --mdc-fab-small-container-width: 3cqi;
+    width: 3cqi;
+    height: 3cqi;
+
+    mat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2cqi;
+        width: 2cqi;
+        height: 2cqi;
+        margin: auto;
+        //color: #ffffff;
+    }
+}
+
+.position-a {
+    top: 50%;
+    left: 85%;
+    transform: translate(-50%, -85%);
+}
+
+.position-b{
+    top: 40%;
+    left: 5%;
+}
+
+
+button {
+    opacity: 60%;
+    border-radius: 100%;
+    font-size: 1rem;
+}
+
+.rotate-two-in {
+    animation: two-faced 1s linear 0s 1 normal forwards;
+}
+
+.rotate-two-out{
+    animation: two-faced 1s linear 0s 1 reverse forwards;
+}
+
+.rotate-flip-in {
+    animation: split .15s linear 0s 1 normal forwards;
+}
+
+.rotate-flip-out {
+    animation: split .15s linear 0s 1 reverse forwards;
+}
+
+.show-portioned-a {
+    animation: portioned-main .25s linear 0s 1 normal forwards;
+}
+
+.remove-portioned-a {
+    animation: portioned-main .25s linear 0s 1 reverse forwards;
+}
+
+.show-portioned-b {
+    animation: portioned-sub-a .25s linear 0s 1 normal forwards;
+}
+
+.remove-portioned-b {
+    animation: portioned-sub-a .25s linear 0s 1 reverse forwards;
+}
+
+.show-portioned-c {
+    animation: portioned-sub-b .25s linear 0s 1 normal forwards;
+}
+
+.remove-portioned-c {
+    animation: portioned-sub-b .25s linear 0s 1 reverse forwards;
+}
+
+.mldParent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.focused {
+    z-index: 5;
+}
+
+.mldParent img {
+    max-height: 50vh;
+    min-width: 0vh;
+    border-radius: 12px;
+    position: absolute;
+}
+
+.flip-card-in {
+    animation: flip-card .15s linear 0s 1 normal forwards;
+}
+
+.flip-card-out {
+    animation: flip-card .15s linear 0s 1 reverse forwards;
+}
+
+// Variables
+$meld-duration: 5s;
+$panel-duration: 2s;
+$size-full: 100%;
+$size-shrunk: 75%;
+
+@mixin anim($name, $duration, $direction: normal, $fill: forwards) {
+    animation: $name $duration linear 0s 1 $direction $fill;
+}
+
+.full-meld {
+    @include anim(melded, $meld-duration);
+}
+
+.full-unmeld {
+    @include anim(melded, $meld-duration, reverse, both);
+}
+
+.front-top-f {
+    @include anim(front-top, $panel-duration, normal, both);
+}
+
+.front-top-b {
+    @include anim(front-top, $panel-duration, reverse, both);
+}
+
+.front-bot-f {
+    @include anim(front-bot, $panel-duration, normal, both);
+}
+
+.front-bot-b {
+    @include anim(front-bot, $panel-duration, reverse, both);
+}
+
+.back-top-f {
+    @include anim(back-top, $panel-duration, normal, both);
+}
+
+.back-top-b {
+    @include anim(back-top, $panel-duration, reverse, both);
+}
+
+.back-bot-f {
+    @include anim(back-bot, $panel-duration, normal, both);
+}
+
+.back-bot-b {
+    @include anim(back-bot, $panel-duration, reverse, both);
+}
+
+
+// Function that builds the transform for a given stage,
+// optionally prefixed with a translate
+@function panel-transform($stage, $translate: none) {
+    $base: '';
+    @if $stage == 75% {
+        $base: rotate(90deg);
+    } @else if $stage == 100% {
+        $base: rotate(90deg) rotateX(90deg);
+    }
+
+    @if $translate == none {
+        @return $base;
+    } @else if $base == '' {
+        @return $translate;
+    } @else {
+        @return $translate $base;
+    }
+}
+
+@keyframes front-top {
+    $t: translate(0%, -25%);
+
+    0% {
+        width: $size-full;
+        height: $size-full;
+    }
+    25% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: $t;
+    }
+    75% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(75%);
+    }
+    100% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(100%);
+    }
+}
+
+@keyframes front-bot {
+    $t: translate(50%, 50%);
+
+    0% {
+        width: $size-full;
+        height: $size-full;
+    }
+    25% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: $t;
+    }
+    75% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(75%, $t);
+    }
+    100% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(100%, $t);
+    }
+}
+
+@keyframes back-top {
+    $t: translate(0%, -25%);
+
+    0% {
+        opacity: 0%;
+    }
+    25% {
+        opacity: 0%;
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: $t;
+    }
+    75% {
+        opacity: 0%;
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(75%);
+    }
+    100% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(100%);
+    }
+}
+
+@keyframes back-bot {
+    $t: translate(50%, 50%);
+    
+    0% {
+        opacity: 0%;
+    }
+    25% {
+        opacity: 0%;
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: $t;
+    }
+    75% {
+        opacity: 0%;
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(75%);
+    }
+    100% {
+        width: $size-shrunk;
+        height: $size-shrunk;
+        transform: panel-transform(100%);
+    }
+}
+
+@keyframes melded {
+    0%{
+        opacity: 100%;
+    }
+    5%{
+        opacity: 0%;
+    }
+    95%{
+        opacity: 0%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes two-faced {
+    0% {
+        display: none;
+        transform: rotateY(0deg)
+    }
+    50% {
+        transform: rotateY(90deg);
+        display: none;
+    }
+    100% {
+        display: block;
+        transform: rotateY(0deg);
+    }
+}
+
+@keyframes split {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes flip-card{
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes portioned-main {
+    0% {
+        filter: brightness(100%);
+    }   
+    100% {
+        filter: brightness(50%);
+    }   
+}
+
+@keyframes portioned-sub-a {
+    0% {
+        transform-origin: left bottom;
+        transform: scale(1.0);
+    }
+    100% {
+        transform-origin: left bottom;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes portioned-sub-b {
+    0% {
+        transform-origin: right bottom;
+        transform: scale(1.0);
+    }
+    100% {
+        transform-origin: right bottom;
+        transform: scale(1.5);
+    }
+}

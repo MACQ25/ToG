@@ -23,7 +23,6 @@ export async function createUserAccount(username, email, password) {
 
     const hashedP = await hashPassword(password)
 
-
     return await User.insertOne( { username, email, password: hashedP } )
 }
 

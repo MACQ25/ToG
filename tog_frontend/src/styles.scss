@@ -47,12 +47,41 @@ html, body { height:100vh; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: black; color: white;}
 
 :root {
+
   @include mat.sidenav-overrides((
     container-background-color: #029b9b,
     container-text-color: #ffffff,
     container-shape: square,
   ));
 
+  @include mat.expansion-overrides((
+    container-elevation-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75),
+    container-background-color: #343333,
+    header-text-size: 1.25rem,
+    header-text-weight: large,
+    container-text-weight: medium,
+
+  ));
+
+}
+
+::-webkit-scrollbar{
+	width: 10px;
+}
+
+::-webkit-scrollbar-track-piece{
+	background-color: #FFF;
+}
+
+::-webkit-scrollbar-thumb{
+	background-color: #12cece;
+	outline: 2px solid #FFF;
+	outline-offset: -2px;
+	border: .1px solid rgb(18, 182, 182);
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background-color: #029B9B;
 }
 
 .main-sidenav .mdc-list-item {
@@ -73,11 +102,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   justify-content: center;
 }
 
-app-set-view {
+.page-content {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    height: 100%;
+    max-height: 100%;
     margin: 5vh 0 0 5vh;
+    overflow-y: auto;
 }

@@ -1,36 +1,37 @@
-<div class="panel">
-    <div class="selects">
-        <app-set-select></app-set-select>
+<div class="page-content">
+    <div class="panel">
+        <div class="selects">
+            <app-set-select></app-set-select>
 
-        @if( selectServ.selected() && cardsServ.treatmentCategories().length > 1 ){
-            <mat-form-field>
-                <mat-label>Treatment</mat-label>
-                <mat-select [(ngModel)]="cardsServ.collectionFilter">
-                    <mat-option [value]=""> No Filter - {{ cardsServ.cardsBase().length }} </mat-option>
-                    @for(treatment of cardsServ.treatmentCategories(); track $index){
-                        <mat-option [value]="treatment.label"> {{ treatment.label }} - {{ treatment.count }} </mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>    
-        }
-
-    </div>
-
-
-    <div id="set-box">
-        <div [style.font-family]=" selectServ.setData() ? selectServ.setData()!.font : 'Arial' ">
-            {{ selectServ.setData() ? selectServ.setData()!.name : "none" }} 
-        </div> 
-        <div>
-            @if (selectServ.setData(); as data) {
-            <mat-icon [svgIcon]="data.icon"></mat-icon>
+            @if( selectServ.selected() && cardsServ.treatmentCategories().length > 1 ){
+                <mat-form-field>
+                    <mat-label>Treatment</mat-label>
+                    <mat-select [(ngModel)]="cardsServ.collectionFilter">
+                        <mat-option [value]=""> No Filter - {{ cardsServ.cardsBase().length }} </mat-option>
+                        @for(treatment of cardsServ.treatmentCategories(); track $index){
+                            <mat-option [value]="treatment.label"> {{ treatment.label }} - {{ treatment.count }} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>    
             }
-        </div>  
-    </div>
 
-</div>
-<div class="gallery-view">
-    @for(card of cardsServ.cardsFiltered(); track card.uuid){
-        <app-card [card]="card"></app-card>
-    }
+        </div>
+
+
+        <div id="set-box">
+            <div [style.font-family]=" selectServ.setData() ? selectServ.setData()!.font : 'Arial' ">
+                {{ selectServ.setData() ? selectServ.setData()!.name : "none" }} 
+            </div> 
+            <div>
+                @if (selectServ.setData(); as data) {
+                <mat-icon [svgIcon]="data.icon"></mat-icon>
+                }
+            </div>  
+        </div>
+    </div>
+    <div class="gallery-view">
+        @for(card of cardsServ.cardsFiltered(); track card.uuid){
+            <app-card [card]="card"></app-card>
+        }
+    </div>
 </div>

@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+.titlePop {
+    font-family: 'Goudy Medieval';
+}
+
+#main-page{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: auto;
+    max-height: 85vh;
+}
+
+.fr {
+	grid-column: 1 / -1
+}
+
+.desc {
+    margin: 0 0 10px 0;
+    font-size: 1.25rem;
+}
+
+.explanations {
+    padding: 20px 10px;
+    grid-column: 1 / 1;
+}
+
+.example-action-buttons h3{
+    display: inline-block;
+}
+
+.example-action-buttons button mat-icon {
+    margin: auto;
+}
+
+.is {
+    font-style: italic;
+}

@@ -1,1 +1,62 @@
-<p>frontpage works!</p>
+<div class="page-content">
+    <div id="main-page">
+        <div class="fr">
+            <h1>Welcome to <span class="titlePop">The Old Gathering</span></h1>
+        </div>
+        
+        <div class="fr">
+            <p class="desc">A tool to run progression styled games of Magic: The Gathering. Open pools of cards from historic magic sets, trade amongst other members of your pod, and play "The way Richard Garfield intended"</p>
+        </div>
+        
+        <div class="explanations">
+            <div class="example-action-buttons">
+                <h3>Some explanations</h3>
+                <button matButton (click)="accordion().openAll()"><mat-icon fontIcon="visibility"></mat-icon></button>
+                <button matButton (click)="accordion().closeAll()"><mat-icon fontIcon="visibility_off"></mat-icon></button>
+            </div>
+            <mat-accordion multi>
+                <mat-expansion-panel >
+                    <mat-expansion-panel-header>
+                    <mat-panel-title> What do you mean by "Progression"? </mat-panel-title>
+                    </mat-expansion-panel-header>
+                        <p> Progression in TCGs refers to a gameplay style where players are given an initial and limited pool of cards to play with and, slowly and over time, additional cards are added to the pool of available cards to build a deck with. </p>
+                        <p> The expansion of the pool can be randomized (or semi-randomized) with the additional cards being opened through sealed product or with sets being progressively added to the pool (usually following the same pattern in which said sets were released), cards may even be rotated out of the pool. </p>
+                        <p> Progression was first popularized by Alex Cimo(†) and Frozen on the Yu-Gi-Oh community and a few projects akin to theirs have been attempted in MTG</p>
+                </mat-expansion-panel>
+                <mat-expansion-panel >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> What is this website for? </mat-panel-title>
+                    </mat-expansion-panel-header>
+                        <p>This website is meant as a companion tool for people trying to run games that <span class="is">follow in spirit</span> that of a progression series, or as a way to envision how the game looked at a certain point in time.</p>
+                        <p>This is not a game-sim nor a drafting tool, but a way for players to more easily and accurately view which cards are currently in the pool and are legal to play</p>
+                        <p>That also means that this website could be used to recreate formats of the days of yore such as block constructed, old standard formats, and extended</p>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                    <mat-panel-title> Wait this sounds familiar </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p>You are right, aside from the "recreating old formats" thing if you have been around you likely remember back when <a href="https://mtg.wiki/page/Magic_League">League Play</a> was a thing, it was surely an inspiration</p>
+                </mat-expansion-panel>
+                <mat-expansion-panel >
+                    <mat-expansion-panel-header>
+                    <mat-panel-title> What do you mean by "The way Richard Garfield Inteded"? </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p>By "The way Richard Garfield Intended" we are referring to a very narrow and somewhat cheeky interpretation of the original intent of how our beloved game should be played.</p>
+                    <p>The initial vision for the game included the idea that cards were balanced around their rarity, cards like the moxes and ancestral recall were "Ok" because they were rare and "no one would get enough to fill a deck with them"</p>
+                    <p>Same reason why the "4-of rule" didn't exist in the initial release</p>
+                    <p>So, this tool started from pondering, how would magic look if people only ever got to play with what they opened, traded for or won through ante? how would it look without the burden of cards holding monetary value?</p>  
+                </mat-expansion-panel>
+                <mat-expansion-panel >
+                    <mat-expansion-panel-header>
+                    <mat-panel-title> Why? </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p>The short answer: I like limited.</p>
+                    <p>The long answer: I am not an old school player, I discovered magic with the release of Dominaria, one of the last few sets to implement League play which is essentially what I have been describing but at your LGS.</p>
+                    <p>I liked league play, at least for the few weeks I knew it, and with this site I hope to run something akin to it in the future</p>
+                </mat-expansion-panel>
+            </mat-accordion>        
+        </div>
+
+
+    </div>
+</div>

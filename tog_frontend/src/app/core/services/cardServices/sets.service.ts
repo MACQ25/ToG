@@ -20,7 +20,6 @@ export class SetsService {
 
 
   public listSets(): Observable<Set[]> {
-    console.log("a call was made yo")
     return this.http.get<any>(`${environment.apiUrl}/sets/all`)
       .pipe(
         switchMap((response: any[]) => {

@@ -22,26 +22,30 @@ export class SetViewComponent {
     treatment: new FormControl(),
   });  
   
-  
+
   constructor(public cardsServ: CardsService){
-    this.galleryControls.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(value => {
-        console.log('Form changed:', value, value.setSelected)
-        this.setSelection(value.setSelected ? true : false, value.setSelected?.code)
+    this.galleryControls.controls.setSelected.valueChanges
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(value => {
+        if (value) {
+          this.cardsServ.fetchSetGallery(value.code);
+        } else{
+            this.cardsServ.cardsBase.set([]);
+            this.cardsServ.collectionFilter.set('');
+        }
       }
     );
-  }
+
+    this.galleryControls.controls.treatment.valueChanges
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(value => {
+        this.cardsServ.collectionFilter.update(() => value)
+      }
+    );
 
 
-  setSelection(selected: boolean, code: string = ""){
-    if (selected) {
-      this.cardsServ.fetchSetGallery(code);
-    } else{
-        this.cardsServ.cardsBase.set([]);
-        this.cardsServ.collectionFilter.set('');
-    }
   }
+
 
   get setData(){
     return this.galleryControls.controls.setSelected.value

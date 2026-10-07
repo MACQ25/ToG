@@ -1,22 +1,21 @@
 <div class="page-content">
     <div class="panel">
-        <div class="selects">
-            <form [formGroup]="galleryControls">
-               <app-set-select formControlName="setSelected"></app-set-select>
 
-                @if( setData && cardsServ.treatmentCategories().length > 1 ){
-                    <mat-form-field>
-                        <mat-label>Treatment</mat-label>
-                        <mat-select [(ngModel)]="cardsServ.collectionFilter">
-                            <mat-option [value]=""> No Filter - {{ cardsServ.cardsBase().length }} </mat-option>
-                            @for(treatment of cardsServ.treatmentCategories(); track $index){
-                                <mat-option [value]="treatment.label"> {{ treatment.label }} - {{ treatment.count }} </mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>    
-                } 
-            </form>
-        </div>
+        <form [formGroup]="galleryControls" class="selects">
+            <app-set-select formControlName="setSelected"></app-set-select>
+
+            @if( setData && cardsServ.treatmentCategories().length > 1 ){
+                <mat-form-field>
+                    <mat-label>Treatment</mat-label>
+                    <mat-select formControlName="treatment">
+                        <mat-option [value]=""> No Filter - {{ cardsServ.cardsBase().length }} </mat-option>
+                        @for(treatment of cardsServ.treatmentCategories(); track $index){
+                            <mat-option [value]="treatment.label"> {{ treatment.label }} - {{ treatment.count }} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>    
+            } 
+        </form>
 
 
         <div id="set-box">

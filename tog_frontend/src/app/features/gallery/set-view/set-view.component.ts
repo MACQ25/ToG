@@ -30,8 +30,7 @@ export class SetViewComponent {
         if (value) {
           this.cardsServ.fetchSetGallery(value.code);
         } else{
-            this.cardsServ.cardsBase.set([]);
-            this.cardsServ.collectionFilter.set('');
+          this.cleanUpCards()
         }
       }
     );
@@ -42,12 +41,19 @@ export class SetViewComponent {
         this.cardsServ.collectionFilter.update(() => value)
       }
     );
-
-
   }
 
 
   get setData(){
     return this.galleryControls.controls.setSelected.value
+  }
+
+  cleanUpCards(){
+    this.cardsServ.cardsBase.set([]);
+    this.cardsServ.collectionFilter.set('');
+  }
+
+  ngOnDestroy(){
+    this.cleanUpCards()
   }
 }

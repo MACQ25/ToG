@@ -1,29 +1,30 @@
 <div class="page-content">
     <div class="panel">
         <div class="selects">
-            <app-set-select></app-set-select>
+            <form [formGroup]="galleryControls">
+               <app-set-select formControlName="setSelected"></app-set-select>
 
-            @if( selectServ.selected() && cardsServ.treatmentCategories().length > 1 ){
-                <mat-form-field>
-                    <mat-label>Treatment</mat-label>
-                    <mat-select [(ngModel)]="cardsServ.collectionFilter">
-                        <mat-option [value]=""> No Filter - {{ cardsServ.cardsBase().length }} </mat-option>
-                        @for(treatment of cardsServ.treatmentCategories(); track $index){
-                            <mat-option [value]="treatment.label"> {{ treatment.label }} - {{ treatment.count }} </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>    
-            }
-
+                @if( setData && cardsServ.treatmentCategories().length > 1 ){
+                    <mat-form-field>
+                        <mat-label>Treatment</mat-label>
+                        <mat-select [(ngModel)]="cardsServ.collectionFilter">
+                            <mat-option [value]=""> No Filter - {{ cardsServ.cardsBase().length }} </mat-option>
+                            @for(treatment of cardsServ.treatmentCategories(); track $index){
+                                <mat-option [value]="treatment.label"> {{ treatment.label }} - {{ treatment.count }} </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>    
+                } 
+            </form>
         </div>
 
 
         <div id="set-box">
-            <div [style.font-family]=" selectServ.setData() ? selectServ.setData()!.font : 'Arial' ">
-                {{ selectServ.setData() ? selectServ.setData()!.name : "none" }} 
+            <div [style.font-family]="setData ? setData!.font : 'Arial' ">
+                {{ setData ? setData!.name : "none" }} 
             </div> 
             <div>
-                @if (selectServ.setData(); as data) {
+                @if (setData; as data) {
                 <mat-icon [svgIcon]="data.icon"></mat-icon>
                 }
             </div>  

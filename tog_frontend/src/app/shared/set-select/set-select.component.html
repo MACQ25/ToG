@@ -1,8 +1,19 @@
 <div class="content">
     <mat-form-field>
+        @if (selectedIcon(); as icon) {
+            <mat-icon matPrefix [svgIcon]="icon"></mat-icon>
+        } @else {
+            <mat-icon matPrefix>search</mat-icon>
+        }
+        
         <mat-label>Select an option</mat-label>
-        <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
+        
+        <input type="text" matInput      
+            [formControl]="setSelectField"
+            (blur)="onTouched()"
+            [matAutocomplete]="auto"
+            >
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)">
             @for(set of filteredOptions | async; track set.id){
                 <mat-option [value]="set"> 
                     <div class="option-container">
@@ -12,14 +23,14 @@
                 </mat-option>
             }
         </mat-autocomplete>
-        <mat-icon *ngIf="selectServ.selected() == null" matPrefix>search</mat-icon>
-        <mat-icon *ngIf="selectServ.selected() != null" matPrefix [svgIcon]="selectServ.selected()!.icon"></mat-icon>
+
 
         @if (clearBtn()) {
-            <button matSuffix matIconButton aria-label="Clear" type="button" (mousedown)="$event.preventDefault()" (click)="clear($event)">
+            <button matSuffix matIconButton aria-label="Clear" type="button" (mousedown)="$event.preventDefault()" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         }
+        
     </mat-form-field>
 
 </div>

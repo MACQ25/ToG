@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CardComponent } from '../../shared/card/card.component';
 import { SetViewComponent } from './set-view/set-view.component';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
@@ -15,6 +15,7 @@ import {MatSelectModule} from '@angular/material/select';
   declarations: [SetViewComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     GalleryRoutingModule,
     SetSelectComponent,
     CardComponent,

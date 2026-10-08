@@ -109,6 +109,40 @@ export async function getAllSets() {
     }
 }
 
+export async function getAllBlocks(){
+    try {
+        const blocks = await SetModel.aggregate(
+            [
+                { $match: {  'data.block': { $exists: true }, 'data.type': { $eq: 'expansion' } } },
+                { $set: { data: { _id: '$_id' } } },
+                { $group: {
+                        _id: '$data.block',
+                        parent_id: {
+                        $top: {
+                            output: '$data._id',
+                            sortBy: { 'data.releaseDate': 1 }
+                        }
+                        },
+                        code: {
+                        $top: {
+                            output: '$data.code',
+                            sortBy: { 'data.releaseDate': 1 }
+                        }
+                        },
+                        members: { $addToSet: '$data.code' },
+                        releaseDate: { $min: '$data.releaseDate' }
+                    }
+                },
+                { $sort: { releaseDate: 1 } }
+            ],
+        );
+        return blocks
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
 export async function getSetCards(code) {
     try {
         const result = await SetModel.aggregate([

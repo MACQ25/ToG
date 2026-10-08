@@ -1,4 +1,4 @@
-import { getAllSets, getSetCards } from "../services/setService.js";
+import { getAllSets, getAllBlocks, getSetCards } from "../services/setService.js";
 
 export async function listSets(req, res) {
     try {
@@ -8,6 +8,17 @@ export async function listSets(req, res) {
         console.error(error);
         return res.status(500).json({ error: error.message });
     }
+}
+
+export async function listBlocks(req, res){
+    try {
+        const allBlocks = await getAllBlocks();
+        return res.status(200).json(allBlocks)
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: error.message });
+    }
+    
 }
 
 export async function setCards(req, res){

@@ -133,9 +133,23 @@ export async function getAllBlocks(){
                         releaseDate: { $min: '$data.releaseDate' }
                     }
                 },
-                { $sort: { releaseDate: 1 } }
+                {
+                    $project: {
+                    _id: '$parent_id', 
+                    data: {
+                        'code': '$code', 
+                        'name': '$_id', 
+                        'releaseDate': '$releaseDate', 
+                        'members': '$members'
+                        }
+                    }
+                },
+                { $sort: { 'data.releaseDate': 1 } }
             ],
         );
+
+
+
         return blocks
     } catch (error) {
         console.log(error)

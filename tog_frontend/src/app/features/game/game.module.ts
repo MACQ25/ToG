@@ -8,18 +8,29 @@ import { MatDividerModule } from '@angular/material/divider';
 import { SelectRouteToggleComponent } from './select-route-toggle/select-route-toggle.component';
 import { JoinComponent } from './join/join.component';
 import { CreateComponent } from './create/create.component';
-import { GameReturnButtonComponent } from '../../shared/game-return-button/game-return-button.component';
-
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SetSelectComponent } from '../../shared/set-select/set-select.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [SelectComponent, SelectRouteToggleComponent, JoinComponent, CreateComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     GameRoutingModule,
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
-    GameReturnButtonComponent
+    MatIconModule,
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatSelectModule, 
+    MatTooltipModule,
+    SetSelectComponent
   ]
 })
 export class GameModule { }

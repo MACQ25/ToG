@@ -1,2 +1,71 @@
-<p>create works!</p>
-<app-game-return-button></app-game-return-button>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    
+    <div class="base-field">
+        <div class="field">
+            <p>Enter a format</p>
+            <mat-form-field >
+                <mat-label>Format</mat-label>
+                <mat-select formControlName="mode">
+                    @for(md of modes; track $index){
+                        <mat-option [value]="md.value"> {{ md.name }} </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+        @if(subSelectFlag1){
+            <div class="big-field">
+                @if(subSelectFlag1 == 1 || subSelectFlag1 == 3){
+                    <div id="to-mod">
+                        @if(subSelectFlag1 == 1) {
+                            <p>Select an <span class="glossary" matTooltip="An arbitray selection of what I have defined as core eras of the game">'Era'</span></p>
+                        } @else {
+                            <p>Select a <span class="glossary" matTooltip="You will be then asked for what specific year of the format">'Format'</span></p>
+                        }
+
+                        <mat-form-field>
+                            <mat-label>Types</mat-label>
+                            <mat-select formControlName="secondary" >
+                                <mat-select-trigger>
+                                    {{ selectedSecondary?.name }}
+                                </mat-select-trigger>
+                                @for(sac of secondaryAssociation; track $index){
+                                    <mat-option [value]="sac.value" > 
+                                        <div class="primary-text">
+                                            {{ sac.name }}
+                                        </div>
+                                        <div class="subtext">
+                                            {{ sac.desc }}
+                                        </div>
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        @for (err of form.controls.secondary.errors | keyvalue; track err.key) {
+                            <mat-error>{{ err.key }}</mat-error>
+                        }
+                        </mat-form-field>
+
+                    </div>
+                } @else if(subSelectFlag1 == 2){
+                    <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
+                    Select a set</span></p>
+                    <app-set-select formControlName="secondary"></app-set-select>
+                }
+            </div>
+        }
+
+        @if(subSelectFlag2){
+            <div class="field">
+                <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
+                    Select a set</span></p>
+                <app-set-select formControlName="tertiary" [blockMode]="blockFlag()"></app-set-select>
+            </div>
+        }
+    </div>
+
+    <button type="submit" >Submit</button>
+
+</form>
+
+
+<button matButton="tonal" routerLink="/play">Return <mat-icon>keyboard_return</mat-icon></button>

@@ -1,0 +1,32 @@
+.base-field{
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+}
+
+
+.primary-text {
+    font-weight: 600;
+}
+
+.subtext {
+    color: #fcfcfc;
+    font-weight: 300;
+    font-size: 0.725em;
+}
+
+.glossary{
+    color: #0ad3d3
+}
+
+.field {
+    flex: 1;
+}
+
+.big-field{
+    flex: 2
+}
+
+#to-mod .mat-mdc-form-field{
+    min-width: 20rem;
+}

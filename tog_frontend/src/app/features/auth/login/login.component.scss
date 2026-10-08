@@ -12,10 +12,9 @@
 .example-form {
   min-width: 150px;
   max-width: 500px;
-}
-
-.example-full-width {
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .divider-spacing{

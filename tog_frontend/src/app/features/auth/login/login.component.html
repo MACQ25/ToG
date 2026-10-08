@@ -7,7 +7,7 @@
     </div>
     <mat-card-content>
         <form class="example-form" [formGroup]="loginForm" (ngSubmit)="loginAccount()">
-            <mat-form-field class="example-full-width">
+            <mat-form-field>
                 <mat-label>Email</mat-label>
                 <input type="email" matInput [formControl]="loginForm.controls.email" [errorStateMatcher]="matcher"
                     placeholder="Ex. pat@example.com">
@@ -15,7 +15,7 @@
             </mat-form-field>
 
 
-            <mat-form-field class="example-full-width" subscriptSizing="dynamic">
+            <mat-form-field subscriptSizing="dynamic">
                 <mat-label>Password</mat-label>
                 <input type="password" matInput [formControl]="loginForm.controls.password" [errorStateMatcher]="matcher">
                 <mat-error><app-errorlabel [control]="loginForm.controls.password"></app-errorlabel></mat-error>

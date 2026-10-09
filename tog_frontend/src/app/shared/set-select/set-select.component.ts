@@ -1,4 +1,4 @@
-import { Component, computed, forwardRef, input, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, forwardRef, input, signal, ViewChild } from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +26,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AsyncPipe,
     MatIconModule,
     MatButtonModule,
+    MatProgressSpinnerModule
   ],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
@@ -80,6 +81,11 @@ export class SetSelectComponent implements ControlValueAccessor {
     );
 
   constructor(public setServ: SetsService) {
+      effect(() => {
+        ( this.isDisabled() ||this.isLoading() )
+          ? this.setSelectField.disable({ emitEvent: false })
+          : this.setSelectField.enable({ emitEvent: false });
+      });
   }
 
 

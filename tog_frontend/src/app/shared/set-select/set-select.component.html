@@ -23,7 +23,6 @@
             [formControl]="setSelectField"
             (blur)="onTouched()"
             [matAutocomplete]="auto"
-            [disabled]="isDisabled() && isLoading()"
             >
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)">
             @for(set of filteredOptions | async; track set.id){

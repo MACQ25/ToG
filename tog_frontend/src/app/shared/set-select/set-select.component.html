@@ -1,17 +1,29 @@
 <div class="content">
     <mat-form-field>
-        @if (selectedIcon(); as icon) {
-            <mat-icon matPrefix [svgIcon]="icon"></mat-icon>
-        } @else {
-            <mat-icon matPrefix>search</mat-icon>
-        }
+        <ng-container matPrefix>
+            @if(isLoading()) {
+                <div class="spinnerPad">
+                    <mat-spinner [diameter]="24"></mat-spinner> 
+                </div>
+            }
+            @else {
+                @if (selectedIcon(); as icon) {
+                    <mat-icon [svgIcon]="icon"></mat-icon>
+                } @else {
+                    <mat-icon >search</mat-icon>
+                }
+            }
+        </ng-container>
+
         
-        <mat-label>Select an option</mat-label>
+        <mat-label>{{ isLoading() ? "Tutoring options" : "Select an option" }}</mat-label>
         
-        <input type="text" matInput      
+        <input type="text" 
+            matInput      
             [formControl]="setSelectField"
             (blur)="onTouched()"
             [matAutocomplete]="auto"
+            [disabled]="isDisabled() && isLoading()"
             >
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)">
             @for(set of filteredOptions | async; track set.id){

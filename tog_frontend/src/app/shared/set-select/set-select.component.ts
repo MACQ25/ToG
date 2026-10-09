@@ -1,15 +1,17 @@
-import { Component, computed, forwardRef, input, ViewChild } from '@angular/core';
+import { Component, computed, forwardRef, input, signal, ViewChild } from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import {MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import { Observable, startWith, map, combineLatest, switchMap } from 'rxjs';
+import { Observable, startWith, map, combineLatest, switchMap, tap } from 'rxjs';
 import { Set } from '../../core/interfaces/set';
 import { MatInputModule } from '@angular/material/input';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { SetsService } from '../../core/services/cardServices/sets.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-set-select',
@@ -42,7 +44,8 @@ export class SetSelectComponent implements ControlValueAccessor {
   setSelectField = new FormControl<string | Set>('');
   onChange: any = () => {};
   onTouched: any = () => {};
-  isDisabled: boolean = false
+  isDisabled = signal<boolean>(false)
+  isLoading = signal<boolean>(false)
 
   current = toSignal(this.setSelectField.valueChanges, { initialValue: this.setSelectField.value });
 
@@ -57,7 +60,13 @@ export class SetSelectComponent implements ControlValueAccessor {
   })
 
   private options$: Observable<Set[]> = toObservable(this.blockMode).pipe(
-    switchMap(isBlock => isBlock ? this.setServ.listBlocks() : this.setServ.listSets()),
+      tap(() => {this.isLoading.set(true); this.isDisabled.set(true)}),
+      switchMap(isBlock => 
+        (isBlock ? this.setServ.listBlocks() : this.setServ.listSets()).pipe(      
+          tap(() => {this.isLoading.set(true); this.isDisabled.set(true)}),
+        )
+      ),
+      tap(() => {this.isLoading.set(false); this.isDisabled.set(false)}),
   );
 
   filteredOptions: Observable<Set[]> = combineLatest([
@@ -87,7 +96,7 @@ export class SetSelectComponent implements ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this.isDisabled = isDisabled
+    this.isDisabled.set(isDisabled)
   }
 
   displayFn(set: Set): string {

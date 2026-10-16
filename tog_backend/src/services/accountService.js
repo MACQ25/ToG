@@ -2,6 +2,7 @@
 import User from "../models/Account.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
+import { config } from "../config/config.js";
 
 const saltRounds = 10;
 
@@ -40,7 +41,7 @@ export async function loginUserAccount(email, password, remember) {
         email: existingUser.email
       };
 
-      const jToken = jwt.sign(userPayload, process.env.JWT_SECRET, { expiresIn: remember ? '10d' : '24h' });
+      const jToken = jwt.sign(userPayload, config.secrets, { expiresIn: remember ? '10d' : '24h' });
 
       return { code: 200, message: "successful loggon", payload: { user: userPayload, token: jToken }}
     } 
@@ -52,7 +53,7 @@ export async function loginUserAccount(email, password, remember) {
 
 export async function loginViaCookie(token) {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, config.secrets);
     
     const checkUser = await User.findById(decoded.id)
     

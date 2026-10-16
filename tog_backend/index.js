@@ -1,13 +1,13 @@
 import express, { json } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-const app = express();
 import connectDB from './src/config/db.js';
-import { config } from 'dotenv';
 import { apiRouter } from './src/routes/routes.js';
 import cookieParser from 'cookie-parser'
+import { config } from './src/config/config.js';
+import 'axios'
 
-config({path: ".env"});
+const app = express();
 
 app.use(
   cors(
@@ -51,6 +51,6 @@ app.get('/api/bsets', async (req, res) => {
 app.use('/', apiRouter)
 
 
-app.listen(3000, () => {
+app.listen(config.port, () => {
   console.log('Server running on port 3000');
 });

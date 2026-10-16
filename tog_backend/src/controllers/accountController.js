@@ -1,3 +1,4 @@
+import { config } from "../config/config.js";
 import { createUserAccount, loginUserAccount, loginViaCookie } from "../services/accountService.js";
 
 export async function accountTest(req, res) {
@@ -34,7 +35,7 @@ export async function loginAccount(req, res) {
         if (loginResult.code === 200) {
             res.cookie('tog_token', loginResult.payload.token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // true in prod (requires HTTPS)
+                secure: config.env === 'production', // true in prod (requires HTTPS)
                 sameSite: 'lax',
                 maxAge: (rememberMe ? 10 : 1) * (24 * 60 * 60 * 1000) 
             });
@@ -72,7 +73,7 @@ export async function logout(req, res) {
 
         res.cookie('tog_token', 'byebye', {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: config.env === 'production',
                 sameSite: 'lax',
                 maxAge: 1
             });

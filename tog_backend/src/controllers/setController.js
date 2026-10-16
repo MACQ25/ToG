@@ -1,4 +1,8 @@
 import { getAllSets, getAllBlocks, getSetCards } from "../services/setService.js";
+import http from 'http'
+import { config } from "../config/config.js";
+import axios from "axios";
+
 
 export async function listSets(req, res) {
     try {
@@ -31,5 +35,30 @@ export async function setCards(req, res){
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: error.message });
+    }
+}
+
+export async function iconProxy(req, res) {
+    const { icon } = req.params;
+
+    try {
+
+        if (!/^[a-z0-9_-]+$/i.test(icon)) {
+            return res.status(204).end();
+        }
+
+        const ares = await axios.get(`https://svgs.scryfall.io/sets/${icon}.svg`, {
+            responseType: 'text',
+            timeout: 5000,
+        });
+        res.set('Cache-Control', 'public, max-age=86400');
+        return res.status(200).type('image/svg+xml').send(ares.data);
+
+    } catch (err) {
+
+        console.error(`Icon proxy failed for "${icon}":`, err.message);
+        res.set('Cache-Control', 'public, max-age=60');
+        return res.status(204).end();
+
     }
 }

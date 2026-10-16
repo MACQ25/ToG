@@ -12,10 +12,51 @@ import { Block } from '../../interfaces/block';
   providedIn: 'root',
 })
 export class SetsService {
+  
+  KNOWN_MISSING = ["4vv", "fbb", "sum", "tsb"];
 
   constructor(private http: HttpClient, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer){
     this.iconRegistry.addSvgIconSet(
       this.sanitizer.bypassSecurityTrustResourceUrl('https://svgs.scryfall.io')
+    );
+  }
+
+  public handleRegisty(code: string): Observable<boolean>{
+    const codeClean = code.toLowerCase();
+    const iconName = `${codeClean}-icon`;
+    const url = `${environment.apiUrl}/sets/icon/${codeClean}`;
+
+    if (this.KNOWN_MISSING.includes(codeClean)) {
+      this.iconRegistry.addSvgIcon(
+          iconName,
+          this.sanitizer.bypassSecurityTrustResourceUrl(`icons/${iconName}.svg`)
+        );
+      return of(true);
+    }
+    else return this.http.get(url, { responseType: 'text', observe: 'response' }).pipe(
+      map((res) => {
+          if (res.status === 200 && res.body) {
+              this.iconRegistry.addSvgIconLiteral(
+                  iconName,
+                  this.sanitizer.bypassSecurityTrustHtml(res.body)
+              );
+          } else {
+              this.registryFallback(iconName);
+          }
+          return true;
+        }),
+      catchError(() => {
+        this.registryFallback(iconName);
+        return of(true);
+      })
+    );
+  }
+
+
+  private registryFallback(iconName: string) {
+    this.iconRegistry.addSvgIcon(
+      iconName,
+      this.sanitizer.bypassSecurityTrustResourceUrl(`icons/pw-icon.svg`)
     );
   }
 

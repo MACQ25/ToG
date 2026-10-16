@@ -129,7 +129,12 @@ export async function getAllBlocks(){
                             sortBy: { 'data.releaseDate': 1 }
                         }
                         },
-                        members: { $addToSet: '$data.code' },
+                        members: { $addToSet: {
+                            id: "$data._id",
+                            name: "$data.name",
+                            code: "$data.code",
+                        } 
+                        },
                         releaseDate: { $min: '$data.releaseDate' }
                     }
                 },

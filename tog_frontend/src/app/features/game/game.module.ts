@@ -15,6 +15,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SetSelectComponent } from '../../shared/set-select/set-select.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { SetIconBoxComponent } from '../../shared/set-icon-box/set-icon-box.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
 
 @NgModule({
   declarations: [SelectComponent, SelectRouteToggleComponent, JoinComponent, CreateComponent],
@@ -30,7 +36,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatInputModule, 
     MatSelectModule, 
     MatTooltipModule,
-    SetSelectComponent
+    SetSelectComponent,
+    SetIconBoxComponent,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ]
 })
 export class GameModule { }

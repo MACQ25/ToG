@@ -46,7 +46,6 @@ export class CardComponent {
   @ViewChild('buttonElement') button?: ElementRef<HTMLImageElement>
   
   ngOnInit() {
-    if(this.type() == 2) console.log(this.card())
     let cardName = this.card().name.replace(' // ', ' ').replaceAll(' ', '-');
     this.url = `https://scryfall.com/card/${this.card().set}/${this.card().number}/${cardName}`
   }

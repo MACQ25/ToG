@@ -3,14 +3,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import {MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import { Observable, startWith, map, combineLatest, switchMap, tap } from 'rxjs';
 import { Set } from '../../core/interfaces/set';
 import { MatInputModule } from '@angular/material/input';
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { SetsService } from '../../core/services/cardServices/sets.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { SetAutocompleteComponent } from '../set-autocomplete/set-autocomplete.component';
 
 
 @Component({
@@ -23,10 +22,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SetAutocompleteComponent
   ],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
@@ -40,13 +39,16 @@ export class SetSelectComponent implements ControlValueAccessor {
 
   blockMode = input<boolean>(false);
 
-  @ViewChild('auto') autocomplete!: MatAutocomplete
+  @ViewChild('auto') autocomplete!: SetAutocompleteComponent
 
   setSelectField = new FormControl<string | Set>('');
   onChange: any = () => {};
   onTouched: any = () => {};
+  
   isDisabled = signal<boolean>(false)
   isLoading = signal<boolean>(false)
+
+  private writing = false;
 
   current = toSignal(this.setSelectField.valueChanges, { initialValue: this.setSelectField.value });
 
@@ -60,65 +62,38 @@ export class SetSelectComponent implements ControlValueAccessor {
     return v && typeof v !== 'string' ? true : false
   })
 
-  private options$: Observable<Set[]> = toObservable(this.blockMode).pipe(
-      tap(() => {this.isLoading.set(true); this.isDisabled.set(true)}),
-      switchMap(isBlock => 
-        (isBlock ? this.setServ.listBlocks() : this.setServ.listSets()).pipe(      
-          tap(() => {this.isLoading.set(true); this.isDisabled.set(true)}),
-        )
-      ),
-      tap(() => {this.isLoading.set(false); this.isDisabled.set(false)}),
-  );
 
-  filteredOptions: Observable<Set[]> = combineLatest([
-      this.setSelectField.valueChanges.pipe(startWith('')),
-      this.options$,
-    ]).pipe(
-      map(([value, list]) => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name && name !== '' ? this._filter(name as string, list) : list.slice();
-      }),
-    );
-
-  constructor(public setServ: SetsService) {
+  constructor() {
       effect(() => {
         ( this.isDisabled() ||this.isLoading() )
           ? this.setSelectField.disable({ emitEvent: false })
           : this.setSelectField.enable({ emitEvent: false });
       });
-  }
 
-
-  writeValue(obj: any): void {
-    this.setSelectField.setValue(obj);
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled)
-  }
-
-  displayFn(set: Set): string {
-    return set && set.name ? set.name : '';
-  }
-
-  private _filter(name: string, list: Set[]): Set[] {
-    const filterValue = name.toLowerCase();
-    return list.filter(option => option.name.toLowerCase().includes(filterValue));
+      this.setSelectField.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(v => {
+        if (this.writing) return;  // don't echo writeValue back up
+        this.onChange(v && typeof v === 'object' ? v : null);
+      });
   }
 
   clear(event?: MouseEvent){
-    //event?.stopPropagation();
-    this.setSelectField.setValue(null);
-    this.autocomplete.options.forEach((opt) => opt.deselect());
-    this.onChange(null)
+    this.setSelectField.reset();
   }
+
+  // CVA
+
+  writeValue(obj: Set | null): void {
+    this.writing = true;
+    this.setSelectField.setValue(obj ?? '');
+    this.writing = false;
+  }
+
+  registerOnChange(fn: any): void { this.onChange = fn; }
+
+  registerOnTouched(fn: any): void { this.onTouched = fn; }
+
+  setDisabledState?(isDisabled: boolean): void { this.isDisabled.set(isDisabled) }
 
 }

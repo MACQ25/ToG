@@ -30,9 +30,15 @@ export class PodConfigService {
 
     readonly constructed: verboseOption[] = [
       { value: null, name: "Pick one" , desc: "" },
-      { value: 1, name: "Standard" , desc: "Flashback to a standard of years past" },
-      { value: 2, name: "Extended" , desc: "" },
-      { value: 3, name: "Block Constructed" , desc: "" },
+      { value: 3, name: "T2" , desc: "Flashback to a standard of years past" },
+      { value: 4, name: "Block Constructed" , desc: "Constructed format limited to the pool of blocks of days past" },
+    ]
+
+    readonly t2 = [
+      { value: 2, name: "Planar Standard" },
+      { value: 3, name: "Long Standard" },
+      { value: 4, name: "Extended Sunset" },
+      { value: 7, name: "Longest Extended" },
     ]
 
 }

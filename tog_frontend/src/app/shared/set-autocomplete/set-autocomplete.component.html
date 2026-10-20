@@ -1,0 +1,14 @@
+<mat-autocomplete 
+    #matAuto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="onSetSelected($event)"
+  >
+  @for (set of filteredOptions(); track set.id) {
+    <mat-option [value]="set">
+      <div class="option-container">
+        <mat-icon [svgIcon]="set.icon" />
+        <span>{{ set.name }}</span>
+      </div>
+    </mat-option>
+  }
+</mat-autocomplete>

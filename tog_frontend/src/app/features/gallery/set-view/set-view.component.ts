@@ -27,6 +27,7 @@ export class SetViewComponent {
     this.galleryControls.controls.setSelected.valueChanges
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(value => {
+        console.log("value changed!", value)
         if (value) {
           this.cardsServ.fetchSetGallery(value.code);
         } else{

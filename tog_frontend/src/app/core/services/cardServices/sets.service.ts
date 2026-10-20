@@ -61,7 +61,7 @@ export class SetsService {
   }
 
   private setUpData(data: any[]): Observable<any>{
-    const sets: any[] = data.map((set: any) => ({
+    let sets: any[] = data.map((set: any) => ({
         id: set._id,
         name: set.data.name,
         code: set.data.code,
@@ -71,29 +71,21 @@ export class SetsService {
         font: new Date(set.data.releaseDate) <= new Date('2003-07-27') ? 'Goudy Medieval' : 'Beleren'
     }));
 
-    const registrations = data.map((set: any) => {
-      const code = set.data.code.toLowerCase();
-      const iconName = `${code}-icon`;
-      const url = `https://svgs.scryfall.io/sets/${code}.svg`;
+    sets = sets.map((set) => {
+      if (set.members) {
+        set.members = set.members.map((chl: any) => ({
+          id: chl.id,
+          name: chl.name,
+          code: chl.code,
+          icon: `${chl.code.toLowerCase()}-icon`,
+          releaseDate: set.releaseDate,
+          font: set.font
+        }))
+      }
+      return set;
+    })
 
-      return this.http.get(url, { responseType: 'text' }).pipe(
-        map((svgContent: string) => {
-          this.iconRegistry.addSvgIconLiteral(
-            iconName,
-            this.sanitizer.bypassSecurityTrustHtml(svgContent)
-          );
-          return true;
-        }),
-        catchError(() => {
-          const fallbackCode = ["4vv", "fbb", "sum", "tsb"].includes(code) ? code : "pw";
-          this.iconRegistry.addSvgIcon(
-            iconName,
-            this.sanitizer.bypassSecurityTrustResourceUrl(`icons/${fallbackCode}-icon.svg`)
-          );
-          return of(true);
-        })
-      );
-    });
+    const registrations = data.map((set: any) => { return this.handleRegisty(set.data.code) });
 
     return forkJoin(registrations).pipe(map(() => sets));
   }
@@ -111,6 +103,14 @@ export class SetsService {
         switchMap((response: any[]) => this.setUpData(response))
       );
   }
+
+  public listByDateRange(year: number, range: number): Observable<Set[]> {
+    return this.http.get<any>(`${environment.apiUrl}/sets/byRange?date=${year}&range=${range}`)
+      .pipe(
+        switchMap((response: any[]) => this.setUpData(response))
+      );  
+  }
+  
 
   public setCardList(code: String): Observable<any>{
     return this.http.get<any>(`${environment.apiUrl}/sets/${code}`)

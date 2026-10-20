@@ -1,11 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    
-    <div class="base-field">
+    <div class="form-row" formGroupName="main">
         <div class="field">
-            <p>Enter a format</p>
+            <p>Enter the format</p>
             <mat-form-field >
                 <mat-label>Format</mat-label>
-                <mat-select formControlName="mode">
+                <mat-select formControlName="primary">
                     @for(md of modes; track $index){
                         <mat-option [value]="md.value"> {{ md.name }} </mat-option>
                     }
@@ -13,11 +12,11 @@
             </mat-form-field>
         </div>
         
-        @if(subSelectFlag1){
+        @if(subSelectFlag1()){
             <div class="big-field">
-                @if(subSelectFlag1 == 1 || subSelectFlag1 == 3){
+                @if(subSelectFlag1() === 1 || subSelectFlag1() === 3){
                     <div id="to-mod">
-                        @if(subSelectFlag1 == 1) {
+                        @if(subSelectFlag1() === 1) {
                             <p>Select an <span class="glossary" matTooltip="An arbitray selection of what I have defined as core eras of the game">'Era'</span></p>
                         } @else {
                             <p>Select a <span class="glossary" matTooltip="You will be then asked for what specific year of the format">'Format'</span></p>
@@ -40,13 +39,13 @@
                                     </mat-option>
                                 }
                             </mat-select>
-                        @for (err of form.controls.secondary.errors | keyvalue; track err.key) {
+                        @for (err of form.controls.main.controls.secondary.errors | keyvalue; track err.key) {
                             <mat-error>{{ err.key }}</mat-error>
                         }
                         </mat-form-field>
 
                     </div>
-                } @else if(subSelectFlag1 == 2){
+                } @else if(subSelectFlag1() === 2){
                     <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
                     Select a set</span></p>
                     <app-set-select formControlName="secondary"></app-set-select>
@@ -54,16 +53,119 @@
             </div>
         }
 
-        @if(subSelectFlag2){
+        @if(subSelectFlag2() >= 6){
             <div class="field">
+            @if(subSelectFlag1() === 1) {
                 <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
-                    Select a set</span></p>
-                <app-set-select formControlName="tertiary" [blockMode]="blockFlag()"></app-set-select>
+                    Select a set
+                </span></p>
+                <app-set-select formControlName="tertiary"></app-set-select>
+            }
+            @else if(subSelectFlag2() === 7) {
+                <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
+                    Select a block
+                </span></p>
+                <app-set-select formControlName="tertiary" [blockMode]="true"></app-set-select>
+            } @else {
+                <div class="stnd-box">
+                    <div class="stnd-m">
+                        <p>Lenght</p>
+                        <mat-form-field>
+                            <mat-label>Select</mat-label>
+                            <mat-select [formControl]="range" (selectionChange)="formSaveCompound()">
+                                <mat-select-trigger>
+                                    {{ range.value }} years
+                                </mat-select-trigger>
+                                @for(opt of t2Ranges; track $index){
+                                    <mat-option [value]="opt.value">{{ opt.name }}</mat-option>
+                                }
+                            </mat-select> 
+                        </mat-form-field>    
+                    </div>
+                    <div class="stnd-d">               
+                        <p>
+                            Select year of last 
+                            <span class="glossary" matTooltip="Sets rotate in fall, the pool will be then defined by sets with remaining time in standard, upcoming sets are displayed as optional">
+                                rotation
+                            </span>
+                        </p>
+                        <mat-form-field>
+                            <mat-label>Year</mat-label>
+                            <input matInput [matDatepicker]="dp" [formControl]="date" [min]="minDate" [max]="maxDate">
+                            <mat-hint>YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                            <mat-datepicker #dp
+                                            startView="multi-year"
+                                            (yearSelected)="setYear($event, dp)"
+                                            panelClass="example-month-picker">
+                            </mat-datepicker>
+                        </mat-form-field>
+                    </div>                     
+                </div>
+
+            }
             </div>
         }
     </div>
 
-    <button type="submit" >Submit</button>
+
+    @if(form.controls.main.valid){
+
+        <div>
+            <h3>Sets in the pool</h3>
+            <app-set-icon-box 
+            [edit]="subSelectFlag2() !== 7" 
+            [chosen]="chosen()" class="big-field">
+            </app-set-icon-box>
+        </div>
+
+        <div class="form-row">
+
+            <section class="field">
+                <h3>Card Pool</h3>
+                <mat-radio-group aria-label="Select an option" formControlName="cardPool">
+                    <ul class="pool-radio">
+                        <li><mat-radio-button value="1" [checked]="true" (change)="poolChange(true)">Acquisition Based</mat-radio-button></li>
+                        <li><mat-radio-button value="2" (change)="poolChange(false)">Full Set Available*</mat-radio-button></li>
+                    </ul>
+                </mat-radio-group>
+            </section>
+
+            <section class="field" formGroupName="exchange">
+                <h3>Trading</h3>
+                <mat-checkbox
+                    [disabled]="form.controls.exchange.disabled"
+                    [checked]="allChecked()"
+                    [indeterminate]="tradingPartial()"
+                    (change)="update($event.checked)">
+                    Allow All Exchanges
+                </mat-checkbox>
+                <ul>
+                    <li>
+                        <mat-checkbox formControlName="tradingPlayers">Allow Trading between players</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox formControlName="tradingBots">Allow Trading with CPUs</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox formControlName="ante">Allow <span class="glossary" matTooltip="Players will be allowed to play for keeps">Ante</span></mat-checkbox>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+        <div class="form-row">
+
+            <section>
+
+            </section>
+
+        </div>
+
+    }
+
+    <button type="submit">Submit</button>
 
 </form>
 

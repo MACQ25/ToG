@@ -1,0 +1,54 @@
+@if(isLoading()){
+    <mat-spinner [diameter]="24"></mat-spinner> 
+}
+@else{
+    @if(edit()){
+    <mat-form-field class="icons-field">
+        <mat-label>Sets In Pool</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Enter sets" >
+            @for (set of chosen(); track set) {
+            
+                <mat-chip-row
+                    (removed)="remove(set)"
+                    [editable]="false"
+                    [attr.aria-description]="'press enter to edit ' + set.name"
+                > 
+                        <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
+                        {{set.name}}
+
+                        <button matChipRemove [attr.aria-label]="'remove ' + set.name">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    
+                </mat-chip-row>
+
+            }
+        </mat-chip-grid>    
+        
+        <input type="text" 
+            matInput
+            [formControl]="setSelectField"
+            [matChipInputFor]="chipGrid"      
+            [matAutocomplete]="auto.child"
+            >
+        <app-set-autocomplete 
+            #auto 
+            [control]="setSelectField" 
+            [clearOnSelect]="true"
+            [exclude]="exclusions()"
+            (optionSelected)="onSetSelected($event)"
+            />
+
+    </mat-form-field>
+    } @else {
+        <mat-chip-set aria-label="Set collection">
+            @for (set of chosen(); track set) { 
+                <mat-chip> 
+                    <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
+                    {{set.name}}
+                </mat-chip>
+            }
+        </mat-chip-set>
+    }
+}
+

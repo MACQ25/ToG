@@ -22,18 +22,14 @@
             matInput      
             [formControl]="setSelectField"
             (blur)="onTouched()"
-            [matAutocomplete]="auto"
+            [matAutocomplete]="auto.child"
             >
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)">
-            @for(set of filteredOptions | async; track set.id){
-                <mat-option [value]="set"> 
-                    <div class="option-container">
-                        <mat-icon [svgIcon]="set.icon"></mat-icon>
-                        <span>{{ set.name }}</span>
-                    </div> 
-                </mat-option>
-            }
-        </mat-autocomplete>
+        <app-set-autocomplete 
+            #auto 
+            [control]="setSelectField" 
+            [blockMode]="blockMode()" 
+            [(isLoading)]="isLoading"
+            />
 
 
         @if (clearBtn()) {

@@ -1,4 +1,4 @@
-.base-field{
+.form-row{
     display: flex;
     flex-direction: row;
     gap: 2vw;
@@ -29,4 +29,29 @@
 
 #to-mod .mat-mdc-form-field{
     min-width: 20rem;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
+
+.pool-radio {
+    padding-left: 0px;
+}
+
+
+.stnd-box {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 2%;
+}
+
+
+.stnd-m {
+    width: 25%;
+}
+
+.stnd-m mat-form-field{
+    width: 100%;
 }

@@ -1,4 +1,4 @@
-import { getAllSets, getAllBlocks, getSetCards } from "../services/setService.js";
+import { getAllSets, getAllBlocks, getByRange, getSetCards } from "../services/setService.js";
 import http from 'http'
 import { config } from "../config/config.js";
 import axios from "axios";
@@ -23,6 +23,21 @@ export async function listBlocks(req, res){
         return res.status(500).json({ error: error.message });
     }
     
+}
+
+export async function listRange(req, res) {
+    try {
+        const { date, range, ori } = req.query;
+        console.log(date, range, ori);
+
+        const inRange = await getByRange(Number.parseInt(date), Number.parseInt(range), ori === 'true')
+        console.log(inRange)
+        return res.status(200).json(inRange)
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: error.message });
+    }
 }
 
 export async function setCards(req, res){

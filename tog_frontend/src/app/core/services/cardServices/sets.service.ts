@@ -104,8 +104,15 @@ export class SetsService {
       );
   }
 
-  public listByDateRange(year: number, range: number): Observable<Set[]> {
-    return this.http.get<any>(`${environment.apiUrl}/sets/byRange?date=${year}&range=${range}`)
+  public listByDateRange(year: number, range: number, rangeStart: boolean = true): Observable<Set[]> {
+    
+    const dParams = {
+      date: year,
+      range: range,
+      ori: rangeStart
+    } 
+
+    return this.http.get<any>(`${environment.apiUrl}/sets/byRange`, {params: dParams})
       .pipe(
         switchMap((response: any[]) => this.setUpData(response))
       );  

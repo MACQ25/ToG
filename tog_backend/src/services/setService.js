@@ -1,4 +1,5 @@
 /** @type {import('mongoose').Model} */
+import { type } from 'os';
 import SetModel from '../models/Set.js';
 
 function handleFaces(cards){
@@ -160,7 +161,53 @@ export async function getAllBlocks(){
         console.log(error)
         throw error
     }
+
+
 }
+
+export async function getByRange(date, range, ori) {
+    try {
+        let dateFilter = {}
+        if(ori) {
+            dateFilter = {
+                $gte: `${date}-01-01`,
+                $lt: `${date + range}-12-31`,
+            }
+        } else {
+            dateFilter = {
+                $gte: `${date - (range - 1)}-09-01`,
+                $lt: `${date + 1}-09-01`,
+            }
+        }
+
+        console.log(dateFilter)
+
+        const sets = await SetModel.find(
+            { 
+                $and: [
+                    {"data.type": { $in: ["expansion", "core"] }},
+                    {"data.isForeignOnly": {$ne: true} }, 
+                    {"data.isOnlineOnly": {$ne: true} } ,
+                    {"data.releaseDate": dateFilter }
+                ] 
+            },
+            { 
+                "data.code": 1, 
+                "data.name": 1, 
+                "data.block": 1, 
+                "data.type": 1, 
+                "data.releaseDate": 1, 
+                "data.tcgplayerGroupId": 1 
+            }
+        ).sort({ "data.releaseDate": 1 });
+
+        return sets
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
 
 export async function getSetCards(code) {
     try {

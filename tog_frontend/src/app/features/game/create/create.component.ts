@@ -173,7 +173,7 @@ export class CreateComponent {
       const dCtrl: Moment = this.date.value!
 
       const stnd = {
-        duration: this.range.value,
+        range: this.range.value,
         year: dCtrl.year()
       }
 
@@ -197,7 +197,12 @@ export class CreateComponent {
     const form = this.$poolPredef()!;
     if(form.tertiary?.members) return form.tertiary?.members
 
-    if(form.tertiary?.year)
+    if(form.tertiary?.year) {
+      const dateObj = form.tertiary
+      this.setServ.listByDateRange(dateObj.year, dateObj.range, false).subscribe(
+        (res: any) => console.log(res)
+      )
+    }
 
     return []
   })

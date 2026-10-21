@@ -7,6 +7,11 @@
     </div>
     <mat-card-content>
         <form class="example-form" [formGroup]="loginForm" (ngSubmit)="loginAccount()">
+            <div *ngIf="authError" class="errorWarn" (click)="authError=undefined;">
+                <mat-error>{{ authError }}</mat-error>
+                <mat-icon>cancel</mat-icon>
+            </div>
+
             <mat-form-field>
                 <mat-label>Email</mat-label>
                 <input type="email" matInput [formControl]="loginForm.controls.email" [errorStateMatcher]="matcher"

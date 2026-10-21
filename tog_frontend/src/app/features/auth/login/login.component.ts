@@ -38,12 +38,13 @@ export class LoginComponent {
 
     matcher = new MyErrorStateMatcher();
 
+    authError = undefined
+
     constructor(private router: Router, private registry: AuthService){}
     
 
     async loginAccount(): Promise<void> {
       console.log( this.loginForm.value.email ?? '', this.loginForm.value.password ?? '')
-
     
       this.registry.login(
         this.loginForm.value.email ?? '',
@@ -54,7 +55,7 @@ export class LoginComponent {
 
         //res => console.log('Response:', res),
         error: err => {
-          console.error('Error:', err);
+          this.authError = err.error.msg;
         }
       }
       );

@@ -41,7 +41,7 @@ export async function loginUserAccount(email, password, remember) {
         email: existingUser.email
       };
 
-      const jToken = jwt.sign(userPayload, config.secrets, { expiresIn: remember ? '10d' : '24h' });
+      const jToken = jwt.sign(userPayload, config.secrets.jwt, { expiresIn: remember ? '10d' : '24h' });
 
       return { code: 200, message: "successful loggon", payload: { user: userPayload, token: jToken }}
     } 

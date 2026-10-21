@@ -28,3 +28,18 @@ mat-card-footer{
 mat-card-footer p{
   text-align: center;
 }
+
+.errorWarn {
+  display: flex;
+  margin: 10px 0px;
+  background-color: rgba(244, 67, 54, 0.753);
+  border-radius: 10px;
+  border: 1px solid white;
+  justify-content: space-between;
+  padding: 10px
+}
+
+.errorWarn mat-error, .errorWarn mat-icon {
+  vertical-align: middle;
+  color: white;
+}

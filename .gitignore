@@ -3,3 +3,5 @@ AllSetFiles
 *.ex
 data
 */node_modules
+*.zip
+

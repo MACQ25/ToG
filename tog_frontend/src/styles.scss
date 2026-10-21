@@ -35,7 +35,21 @@ $theme: mat.define-theme((
   font-family: 'Beleren';
   src: url('assets/fonts/Beleren2016-Bold.ttf') format('truetype');
   font-weight: normal;
-  font-style: normal
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Matrix';
+  src: url('assets/fonts/Matrix.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Matrix';
+  src: url('assets/fonts/MatrixBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
 }
 
 

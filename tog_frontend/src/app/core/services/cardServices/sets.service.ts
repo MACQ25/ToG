@@ -60,6 +60,12 @@ export class SetsService {
     );
   }
 
+  private fontAccordingToDate(date: Date){
+      if(date < new Date('2003-07-28')) return 'Goudy Medieval';
+      else if (date < new Date('2014-07-18')) return 'Matrix';
+      else return 'Beleren'
+  }
+
   private setUpData(data: any[]): Observable<any>{
     let sets: any[] = data.map((set: any) => ({
         id: set._id,
@@ -68,7 +74,7 @@ export class SetsService {
         members: set.data.members,
         icon: `${set.data.code.toLowerCase()}-icon`,
         releaseDate: set.data.releaseDate,
-        font: new Date(set.data.releaseDate) <= new Date('2003-07-27') ? 'Goudy Medieval' : 'Beleren'
+        font: this.fontAccordingToDate(new Date(set.data.releaseDate))
     }));
 
     sets = sets.map((set) => {

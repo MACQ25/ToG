@@ -53,7 +53,7 @@ export async function loginUserAccount(email, password, remember) {
 
 export async function loginViaCookie(token) {
   try {
-    const decoded = jwt.verify(token, config.secrets);
+    const decoded = jwt.verify(token, config.secrets.jwt);
     
     const checkUser = await User.findById(decoded.id)
     

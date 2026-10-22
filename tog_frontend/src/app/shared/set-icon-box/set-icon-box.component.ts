@@ -1,17 +1,19 @@
-import { Component, computed, effect, input, model, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, model, signal, ViewChild } from '@angular/core';
 import { SetsService } from '../../core/services/cardServices/sets.service';
 import { Set } from '../../core/interfaces/set';
 import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { switchMap, forkJoin, defaultIfEmpty, tap } from 'rxjs';
+import { switchMap, forkJoin, defaultIfEmpty, tap, of } from 'rxjs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SetAutocompleteComponent } from '../set-autocomplete/set-autocomplete.component';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+
 
 @Component({
   selector: 'app-set-icon-box',
@@ -26,7 +28,8 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
     MatChipsModule, 
     MatIconModule,
     MatProgressSpinnerModule, 
-    SetAutocompleteComponent
+    SetAutocompleteComponent,
+    MatCardModule
   ],
   templateUrl: './set-icon-box.component.html',
   styleUrl: './set-icon-box.component.scss',
@@ -39,13 +42,15 @@ export class SetIconBoxComponent {
 
   isLoading = signal<boolean>(true)
 
-  edit = input<boolean>(true);
+  predef = input<boolean>(false);
+
+  iePools = input<boolean>(false)
 
   chosen = model<any>()
 
   exclusions = computed(() => {
 
-    if (!this.edit()) return null 
+    if (this.predef()) return null 
 
     let toReturn = {}
 
@@ -59,12 +64,16 @@ export class SetIconBoxComponent {
 
   constructor(setServ: SetsService){
     toObservable(this.chosen).pipe(
-      switchMap(sets => forkJoin((sets ?? []).map((s: Set) => {return setServ.handleRegisty(s.code)}))
-        .pipe(defaultIfEmpty([]))),
+      switchMap(sets => 
+        Array.isArray(sets) ?
+          forkJoin(
+              (sets ?? []).map((s: Set) => { return setServ.handleRegisty(s.code) })
+          ).pipe(defaultIfEmpty([]))
+        : of(sets)
+      ),
       tap(() => {this.isLoading.set(false);}),
       takeUntilDestroyed()
     ).subscribe();
-
   }
 
   remove(set: Set): void {

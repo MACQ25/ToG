@@ -2,53 +2,108 @@
     <mat-spinner [diameter]="24"></mat-spinner> 
 }
 @else{
-    @if(edit()){
-    <mat-form-field class="icons-field">
-        <mat-label>Sets In Pool</mat-label>
-        <mat-chip-grid #chipGrid aria-label="Enter sets" >
-            @for (set of chosen(); track set) {
-            
-                <mat-chip-row
-                    (removed)="remove(set)"
-                    [editable]="false"
-                    [attr.aria-description]="'press enter to edit ' + set.name"
-                > 
+    @if(predef()){
+        @if(iePools()){
+            <div class="chipPanels">
+                
+                <mat-card appearance="outlined" *ngIf="chosen().justRotated && chosen().justRotated.length > 0">
+                    <mat-card-header>
+                        <mat-card-title>Just Rotated</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-chip-set aria-label="Legal Post Rotation">
+                        @for (set of chosen().justRotated; track set) { 
+                            <mat-chip> 
+                                <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
+                                {{set.name}}
+                            </mat-chip>
+                        }
+                        </mat-chip-set>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card appearance="outlined">
+                    <mat-card-header>
+                        <mat-card-title>Sets Legal</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-chip-set aria-label="Legal Post Rotation">
+                        @for (set of chosen().included; track set) { 
+                            <mat-chip> 
+                                <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
+                                {{set.name}}
+                            </mat-chip>
+                        }
+                        </mat-chip-set>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card appearance="outlined">
+                    <mat-card-header>
+                        <mat-card-title>To Be Released</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-chip-set aria-label="Legal Before Next Rotation">
+                        @for (set of chosen().toRelease; track set) { 
+                            <mat-chip> 
+                                <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
+                                {{set.name}}
+                            </mat-chip>
+                        }
+                        </mat-chip-set>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        } 
+        @else {
+            <mat-chip-set aria-label="Set collection">
+                @for (set of chosen(); track set) { 
+                    <mat-chip> 
                         <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
                         {{set.name}}
+                    </mat-chip>
+                }
+            </mat-chip-set>            
+        }
 
-                        <button matChipRemove [attr.aria-label]="'remove ' + set.name">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    
-                </mat-chip-row>
-
-            }
-        </mat-chip-grid>    
-        
-        <input type="text" 
-            matInput
-            [formControl]="setSelectField"
-            [matChipInputFor]="chipGrid"      
-            [matAutocomplete]="auto.child"
-            >
-        <app-set-autocomplete 
-            #auto 
-            [control]="setSelectField" 
-            [clearOnSelect]="true"
-            [exclude]="exclusions()"
-            (optionSelected)="onSetSelected($event)"
-            />
-
-    </mat-form-field>
     } @else {
-        <mat-chip-set aria-label="Set collection">
-            @for (set of chosen(); track set) { 
-                <mat-chip> 
-                    <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
-                    {{set.name}}
-                </mat-chip>
-            }
-        </mat-chip-set>
+        <mat-form-field class="icons-field">
+            <mat-label>Sets In Pool</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Enter sets" >
+                @for (set of chosen(); track set) {
+                
+                    <mat-chip-row
+                        (removed)="remove(set)"
+                        [editable]="false"
+                        [attr.aria-description]="'press enter to edit ' + set.name"
+                    > 
+                            <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
+                            {{set.name}}
+
+                            <button matChipRemove [attr.aria-label]="'remove ' + set.name">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        
+                    </mat-chip-row>
+
+                }
+            </mat-chip-grid>    
+            
+            <input type="text" 
+                matInput
+                [formControl]="setSelectField"
+                [matChipInputFor]="chipGrid"      
+                [matAutocomplete]="auto.child"
+                >
+            <app-set-autocomplete 
+                #auto 
+                [control]="setSelectField" 
+                [clearOnSelect]="true"
+                [exclude]="exclusions()"
+                (optionSelected)="onSetSelected($event)"
+                />
+
+        </mat-form-field>
     }
 }
 

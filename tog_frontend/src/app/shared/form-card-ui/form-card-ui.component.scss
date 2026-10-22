@@ -5,12 +5,11 @@
 }
 
 .center-card {
-  overflow-y: auto;
+  overflow-x: visible;
   display: flex;
   flex: 1;
-  min-height: 0;   // lets it fill remaining height without pushing past the viewport
-  display: flex;
+  min-height: 0; 
   align-items: center;
   justify-content: center;
-  // no height:100vh
+  margin: 5vh;
 }

@@ -180,8 +180,6 @@ export async function getByRange(date, range, ori) {
             }
         }
 
-        console.log(dateFilter)
-
         const sets = await SetModel.find(
             { 
                 $and: [
@@ -201,7 +199,47 @@ export async function getByRange(date, range, ori) {
             }
         ).sort({ "data.releaseDate": 1 });
 
-        return sets
+        let res = {
+            included: [],
+            toRelease: []
+        }
+
+        sets.forEach((set) => {
+            if(new Date(Date.parse(set.data.releaseDate)).getFullYear() <= Number.parseInt(date)){
+                res.included.push(set);
+            } else res.toRelease.push(set);
+        })
+
+        if(true) {
+            const rotationRange = {
+                $gte: `${date - range}-09-01`,
+                $lt: `${date - (range - 1)}-09-01`,
+            }
+
+            const rotateOut = await SetModel.find(
+                { 
+                    $and: [
+                        {"data.type": { $in: ["expansion", "core"] }},
+                        {"data.isForeignOnly": {$ne: true} }, 
+                        {"data.isOnlineOnly": {$ne: true} } ,
+                        {"data.releaseDate": rotationRange }
+                    ] 
+                },
+                { 
+                    "data.code": 1, 
+                    "data.name": 1, 
+                    "data.block": 1, 
+                    "data.type": 1, 
+                    "data.releaseDate": 1, 
+                    "data.tcgplayerGroupId": 1 
+                }
+            ).sort({ "data.releaseDate": 1 })
+
+            console.log(rotateOut);
+            Object.assign(res, { justRotated: [...rotateOut] })
+        }
+
+        return res;
     } catch (error) {
         console.log(error)
         throw error

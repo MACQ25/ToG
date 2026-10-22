@@ -3,7 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { map, Observable, tap, switchMap, forkJoin, catchError, of, ObservableInput } from 'rxjs';
+import { map, Observable, tap, switchMap, forkJoin, catchError, of, ObservableInput, merge } from 'rxjs';
 import { Set } from '../../interfaces/set';
 import { Block } from '../../interfaces/block';
 
@@ -110,7 +110,7 @@ export class SetsService {
       );
   }
 
-  public listByDateRange(year: number, range: number, rangeStart: boolean = true): Observable<Set[]> {
+  public listByDateRange(year: number, range: number, rangeStart: boolean = true): Observable<any> {
     
     const dParams = {
       date: year,
@@ -120,7 +120,14 @@ export class SetsService {
 
     return this.http.get<any>(`${environment.apiUrl}/sets/byRange`, {params: dParams})
       .pipe(
-        switchMap((response: any[]) => this.setUpData(response))
+        switchMap((response: any) => forkJoin(
+            {
+              included: this.setUpData(response.included),
+              toRelease: this.setUpData(response.toRelease),
+              justRotated: response.justRotated ? this.setUpData(response.justRotated) : []
+            }
+          )
+        )
       );  
   }
   

@@ -5,3 +5,18 @@
 .icons-field{
     width: 100%;
 }
+
+.chipPanels{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 2vw;
+}
+
+.chipPanels mat-card{
+    flex: 1 1 0;
+    align-items: flex-start;
+}
+
+mat-card-header {
+    padding-bottom: 2vh;
+}

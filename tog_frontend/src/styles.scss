@@ -129,3 +129,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 app-select{
   width: fit-content(40rem);
 }
+
+.mat-mdc-form-field-infix {
+  min-width: 0;
+  width: auto;
+}

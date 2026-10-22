@@ -1,9 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { ReactiveFormsModule, FormArray, FormControl, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { PodConfigService, verboseOption } from '../../../core/services/gameServices/pod-config.service';
 import { SetsService } from '../../../core/services/cardServices/sets.service';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { Observable, of, startWith, switchMap } from 'rxjs';
 import {MatDatepicker} from '@angular/material/datepicker';
 import { Set } from '../../../core/interfaces/set';
 
@@ -187,25 +187,24 @@ export class CreateComponent {
 
   // IMPLEMENTATION OF SET POOL BLOCK
 
-  poolFlag = computed(() => {
-    return this.subSelectFlag1() === 4 || (this.subSelectFlag2() >= 6)
-  })
+  chosen = toSignal(
+    this.form.controls.main.valueChanges.pipe(
+      startWith(this.form.controls.main.value),
+      switchMap(form => {
+        if (form.tertiary?.members) return of(form.tertiary.members);
 
-  $poolPredef = toSignal(this.form.controls.main.valueChanges)
+        if (form.tertiary?.year) {
+          const { year, range } = form.tertiary;
+          return this.setServ.listByDateRange(year, range, false);
+        }
 
-  chosen = computed(() => {
-    const form = this.$poolPredef()!;
-    if(form.tertiary?.members) return form.tertiary?.members
+        return of([]);
+      })
+    ),
+    { initialValue: [] }
+  );
 
-    if(form.tertiary?.year) {
-      const dateObj = form.tertiary
-      this.setServ.listByDateRange(dateObj.year, dateObj.range, false).subscribe(
-        (res: any) => console.log(res)
-      )
-    }
-
-    return []
-  })
+  pool = linkedSignal(() => this.chosen());
 
 
   // END OF IMPLEMENTATION OF SET POOL BLOCK
@@ -248,6 +247,6 @@ export class CreateComponent {
   // END OF FUNCTIONS FOR EXCHANGE OPTIONS
 
   onSubmit(){
-    console.log(this.subSelectFlag1(), this.subSelectFlag2(), this.form)
+    console.log(this.form, this.pool())
   }
 }

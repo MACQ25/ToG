@@ -19,9 +19,9 @@ echo Done!
 tasklist /FI "IMAGENAME eq %DB_ADMIN_APP%" | FIND /i "%DB_ADMIN_APP%" >nul
 if errorlevel 1 (
 
-    choice /C YN /T 10 /D Y /M "Do you want to open DB visualizer? "
-    if %errorlevel%==1 goto yes
-    if %errorlevel%==2 goto no
+    choice /C YN /T 20 /D N /M "Do you want to open DB visualizer? "
+    if ERRORLEVEL 2 goto :no
+    if ERRORLEVEL 1 goto :yes
 
     :yes
     echo Opening %DB_ADMIN_APP%

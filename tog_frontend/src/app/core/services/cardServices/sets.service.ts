@@ -13,7 +13,9 @@ import { Block } from '../../interfaces/block';
 })
 export class SetsService {
   
-  KNOWN_MISSING = ["4vv", "fbb", "sum", "tsb"];
+  KNOWN_MISSING: String[] = ["4vv", "fbb", "sum", "tsb"];
+
+  REGISTERED: String[] = [];
 
   constructor(private http: HttpClient, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer){
     this.iconRegistry.addSvgIconSet(
@@ -24,6 +26,11 @@ export class SetsService {
   public handleRegisty(code: string): Observable<boolean>{
     const codeClean = code.toLowerCase();
     const iconName = `${codeClean}-icon`;
+
+    if(this.REGISTERED.includes(codeClean)){
+      return of(true)
+    }
+
     const url = `${environment.apiUrl}/sets/icon/${codeClean}`;
 
     if (this.KNOWN_MISSING.includes(codeClean)) {
@@ -40,6 +47,7 @@ export class SetsService {
                   iconName,
                   this.sanitizer.bypassSecurityTrustHtml(res.body)
               );
+              this.REGISTERED.push(codeClean)
           } else {
               this.registryFallback(iconName);
           }
@@ -106,25 +114,26 @@ export class SetsService {
   public listBlocks(): Observable<Block[]> {
     return this.http.get<any>(`${environment.apiUrl}/sets/blocksSelect`)
       .pipe(
-        switchMap((response: any[]) => this.setUpData(response))
+        switchMap((response: any[]) => this.setUpData(response)),
       );
   }
 
-  public listByDateRange(year: number, range: number, rangeStart: boolean = true): Observable<any> {
+  public listByDateRange(year: any, range: number, rangeStart: boolean = true, options = null): Observable<any> {
     
     const dParams = {
       date: year,
       range: range,
-      ori: rangeStart
+      ori: rangeStart,
+      opt: options
     } 
 
-    return this.http.get<any>(`${environment.apiUrl}/sets/byRange`, {params: dParams})
+    return this.http.post<any>(`${environment.apiUrl}/sets/byRange`, dParams)
       .pipe(
         switchMap((response: any) => forkJoin(
             {
               included: this.setUpData(response.included),
               toRelease: this.setUpData(response.toRelease),
-              justRotated: response.justRotated ? this.setUpData(response.justRotated) : []
+              justRotated: response.justRotated ? this.setUpData(response.justRotated) : of(null)
             }
           )
         )

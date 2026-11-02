@@ -4,7 +4,7 @@ import { listSets, listBlocks, listRange, setCards, iconProxy } from '../control
 let setRouter = Router()
     .get('/all', listSets)
     .get('/blocksSelect', listBlocks)
-    .get('/byRange', listRange)
+    .post('/byRange', listRange)
     .get('/:code', setCards)
     .get('/icon/:icon', iconProxy)
 

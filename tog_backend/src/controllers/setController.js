@@ -27,11 +27,13 @@ export async function listBlocks(req, res){
 
 export async function listRange(req, res) {
     try {
-        const { date, range, ori } = req.query;
-        console.log(date, range, ori);
+        const { date, range, ori, opt } = req.body;
+        console.log(date, range, ori, opt);
 
-        const inRange = await getByRange(Number.parseInt(date), Number.parseInt(range), ori === 'true')
+        const inRange = await getByRange(date, range, ori, opt)
+
         console.log(inRange)
+
         return res.status(200).json(inRange)
 
     } catch (error) {
@@ -66,8 +68,12 @@ export async function iconProxy(req, res) {
             responseType: 'text',
             timeout: 5000,
         });
+
+        // Trying out naive way to remove fill
+        const cleaned = ares.data.replace(/\sfill(-rule)?="[^"]*"/g, '');
+        
         res.set('Cache-Control', 'public, max-age=86400');
-        return res.status(200).type('image/svg+xml').send(ares.data);
+        return res.status(200).type('image/svg+xml').send(cleaned);
 
     } catch (err) {
 

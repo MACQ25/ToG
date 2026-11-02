@@ -2,6 +2,15 @@
 import { type } from 'os';
 import SetModel from '../models/Set.js';
 
+const SetObj = { 
+    "data.code": 1, 
+    "data.name": 1, 
+    "data.block": 1, 
+    "data.type": 1, 
+    "data.releaseDate": 1
+}
+
+
 function handleFaces(cards){
 
     const div ={...Object.groupBy(cards, ({number}) => number )};
@@ -101,7 +110,7 @@ export async function getAllSets() {
     try {
         const sets = await SetModel.find(
             { $and: [{"data.type": { $in: ["expansion", "core", "masters"] }}, {"data.isForeignOnly": {$ne: true} }, {"data.isOnlineOnly": {$ne: true} } ] },
-            { "data.code": 1, "data.name": 1, "data.block": 1, "data.type": 1, "data.releaseDate": 1, "data.tcgplayerGroupId": 1 }
+            SetObj
         ).sort({ "data.releaseDate": 1 });
         return sets
     } catch (error) {
@@ -165,18 +174,33 @@ export async function getAllBlocks(){
 
 }
 
-export async function getByRange(date, range, ori) {
+export async function getByRange(date, range, ori, opt) {
     try {
-        let dateFilter = {}
+
+        const target = new Date(date)
+
+        /*
+        const lThresh = new Date(date);
+        const hThresh = new Date(date);
+
+        lThresh.setFullYear(lThresh.getFullYear() - (range - 1));
+        hThresh.setFullYear(hThresh.getFullYear() + 1);
+
+        console.log(lThresh, hThresh)
+
+        */
+        
+        let dateFilter = {
+            $gte: [],
+            $lt: []
+        };
+
         if(ori) {
-            dateFilter = {
-                $gte: `${date}-01-01`,
-                $lt: `${date + range}-12-31`,
-            }
+            // this is for the progression one
         } else {
             dateFilter = {
-                $gte: `${date - (range - 1)}-09-01`,
-                $lt: `${date + 1}-09-01`,
+                $gte: `${target.getFullYear() - (range - 1)}-09-01`,
+                $lt: `${target.getFullYear() + 1}-09-01`,
             }
         }
 
@@ -189,14 +213,7 @@ export async function getByRange(date, range, ori) {
                     {"data.releaseDate": dateFilter }
                 ] 
             },
-            { 
-                "data.code": 1, 
-                "data.name": 1, 
-                "data.block": 1, 
-                "data.type": 1, 
-                "data.releaseDate": 1, 
-                "data.tcgplayerGroupId": 1 
-            }
+            SetObj
         ).sort({ "data.releaseDate": 1 });
 
         let res = {
@@ -210,10 +227,11 @@ export async function getByRange(date, range, ori) {
             } else res.toRelease.push(set);
         })
 
-        if(true) {
+        if(opt.displayRotated) {
+                    
             const rotationRange = {
-                $gte: `${date - range}-09-01`,
-                $lt: `${date - (range - 1)}-09-01`,
+                $gte: `${target.getFullYear() - range}-09-01`,
+                $lt: `${target.getFullYear() - (range - 1)}-09-01`,
             }
 
             const rotateOut = await SetModel.find(
@@ -225,17 +243,9 @@ export async function getByRange(date, range, ori) {
                         {"data.releaseDate": rotationRange }
                     ] 
                 },
-                { 
-                    "data.code": 1, 
-                    "data.name": 1, 
-                    "data.block": 1, 
-                    "data.type": 1, 
-                    "data.releaseDate": 1, 
-                    "data.tcgplayerGroupId": 1 
-                }
+                SetObj
             ).sort({ "data.releaseDate": 1 })
 
-            console.log(rotateOut);
             Object.assign(res, { justRotated: [...rotateOut] })
         }
 

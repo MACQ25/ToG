@@ -64,14 +64,20 @@ export class SetIconBoxComponent {
 
   constructor(setServ: SetsService){
     toObservable(this.chosen).pipe(
-      switchMap(sets => 
-        Array.isArray(sets) ?
-          forkJoin(
-              (sets ?? []).map((s: Set) => { return setServ.handleRegisty(s.code) })
-          ).pipe(defaultIfEmpty([]))
-        : of(sets)
+      switchMap(sets => {
+        this.isLoading.set(true);
+        return Array.isArray(sets) ?
+            forkJoin(
+                (sets ?? []).map((s: Set) => { return setServ.handleRegisty(s.code) })
+            ).pipe(defaultIfEmpty([]))
+          : of(sets)
+        }
       ),
-      tap(() => {this.isLoading.set(false);}),
+      tap((sets: Set[] | Object) => 
+        this.isLoading.set(
+          !( (Array.isArray(sets) && sets.length > 0) || (Object.keys(sets).length > 0) || !this.predef() )
+        )
+    ),
       takeUntilDestroyed()
     ).subscribe();
   }

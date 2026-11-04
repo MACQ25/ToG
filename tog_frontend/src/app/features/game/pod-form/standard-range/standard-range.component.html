@@ -1,0 +1,75 @@
+<div class="stnd-box" [formGroup]="inner">
+    <div class="stnd-m">
+        <p>Length</p>
+        <mat-form-field>
+            <mat-label>Select</mat-label>
+            <mat-select formControlName="range" (selectionChange)="onTouched()">
+                <mat-select-trigger>
+                    {{ rangeDisplay }}
+                </mat-select-trigger>
+                @for(opt of t2Ranges; track $index){
+                    <mat-option [value]="opt.value">{{ opt.name }}</mat-option>
+                }
+            </mat-select> 
+        </mat-form-field>    
+    </div>
+    <div class="stnd-d">               
+        <p>
+            Select year of last 
+            <span class="glossary" matTooltip="Sets rotate in fall, the pool will be then defined by sets with remaining time in standard, upcoming sets are displayed as optional">
+                rotation
+            </span>
+        </p>
+        <mat-form-field>
+            <mat-label>Year</mat-label>
+            <input matInput [matDatepicker]="dp" [min]="minDate" [max]="maxDate" formControlName="date"  > <!-- [matDatepickerFilter]="dateFilter" -->
+            <mat-hint>YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker 
+                #dp
+                startView="multi-year"
+                (yearSelected)="setYear($event, dp)"
+                panelClass="example-month-picker"
+            >
+            </mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <div class="stnd-m" id="stnd-adv">
+        <button matIconButton aria-label="Example icon-button with a menu" type="button" (click)="showAdv.set(!showAdv())" disabled="{{inner.controls.range.value === 1}}">
+            <mat-icon>settings</mat-icon>
+        </button>
+    </div>     
+</div>
+
+<div class="form-row adv-row" [class.open]="showAdv()" [formGroup]="advanced" (click)="$event.stopPropagation()">
+    <div class="field">
+        <h4>Display</h4>
+        <mat-checkbox formControlName="displayRotated">Display sets that just rotated</mat-checkbox>
+    </div>
+    
+    <div class="field">
+        <h4>Base Set Legality</h4>
+        <mat-radio-group aria-label="Core Set Behavior" formControlName="csBehavior" class="radio-group">
+                <mat-radio-button [value]="1" [checked]="true">
+                    Core Sets
+                </mat-radio-button>
+                <mat-radio-button [value]="2">
+                    <span class="glossary" matTooltip="New core sets immediately rotate previous ones">Editions</span>
+                </mat-radio-button>
+        </mat-radio-group>           
+
+    </div>              
+    <div class="field">
+        <h4>Rotation day</h4>
+        <mat-radio-group aria-label="Rotation happens in" formControlName="rDate" class="radio-group">
+            <mat-radio-button [value]="1" [checked]="true">Fall</mat-radio-button>
+            <mat-radio-button [value]="2">1st Set of the year</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div class="field">
+        <h4>Masters <span class="glossary" matTooltip="Master sets have never been allowed in T2 or T1.5 except for Chronicles in 1995, but what if...">*</span></h4>
+        <mat-checkbox formControlName="allowMasters">Allow masters sets released in range</mat-checkbox>
+    </div>
+</div>      

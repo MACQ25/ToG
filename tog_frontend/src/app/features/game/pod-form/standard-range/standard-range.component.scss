@@ -1,0 +1,56 @@
+.stnd-box {
+  display: flex;
+  flex-grow: 1;
+  gap: 1rem;
+  align-items:center;
+}
+
+.stnd-m, .stnd-d {
+  min-width: 0;
+}
+
+.stnd-m {
+  flex: 1;
+}
+
+.stnd-d {
+  flex: 2;
+}
+
+#stnd-adv{
+  padding-top: 4vh;
+}
+
+mat-form-field {
+  width: 100%;       /* fill the wrapper instead of using the 180px default */
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.field {
+  flex: 1;   /* basis is a preferred size, not a minimum */
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  padding-left: 0px;
+  align-items: flex-start;
+}
+
+.adv-row {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease, opacity 300ms ease;
+
+  &.open {
+    max-height: 300vh;
+    opacity: 1;
+  }
+}

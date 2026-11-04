@@ -190,6 +190,13 @@ export async function getByRange(date, range, ori, opt) {
 
         */
         
+        let expansionType = [ "expansion", "core" ]
+
+        if(opt.allowMasters){
+            expansionType.push("masters")
+        }
+
+
         let dateFilter = {
             $gte: [],
             $lt: []
@@ -204,10 +211,11 @@ export async function getByRange(date, range, ori, opt) {
             }
         }
 
+
         const sets = await SetModel.find(
             { 
                 $and: [
-                    {"data.type": { $in: ["expansion", "core"] }},
+                    {"data.type": { $in: expansionType }},
                     {"data.isForeignOnly": {$ne: true} }, 
                     {"data.isOnlineOnly": {$ne: true} } ,
                     {"data.releaseDate": dateFilter }
@@ -237,7 +245,7 @@ export async function getByRange(date, range, ori, opt) {
             const rotateOut = await SetModel.find(
                 { 
                     $and: [
-                        {"data.type": { $in: ["expansion", "core"] }},
+                        {"data.type": { $in: expansionType }},
                         {"data.isForeignOnly": {$ne: true} }, 
                         {"data.isOnlineOnly": {$ne: true} } ,
                         {"data.releaseDate": rotationRange }

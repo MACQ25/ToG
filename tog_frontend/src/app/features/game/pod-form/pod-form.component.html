@@ -1,0 +1,170 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div formGroupName="main">
+        <div class="form-row">
+            <div class="field">
+                <p>Enter the format</p>
+                <mat-form-field >
+                    <mat-label>Format</mat-label>
+                    <mat-select formControlName="primary" (selectionChange)="svc.onPrimaryChanged()">
+                        @for(md of svc.primaryOptions; track $index){
+                            <mat-option [value]="md.value"> {{ md.name }} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            @if(svc.primary()){
+                <div class="big-field">
+                    @if(svc.primary() === 1 || svc.primary() === 3){
+                        <div id="to-mod">
+                            @if(svc.primary() === 1) {
+                                <p>Select an <span class="glossary" matTooltip="An arbitray selection of what I have defined as core eras of the game">'Era'</span></p>
+                            } @else {
+                                <p>Select a <span class="glossary" matTooltip="You will be then asked for what specific year of the format">'Format'</span></p>
+                            }
+
+                            <mat-form-field>
+                                <mat-label>Types</mat-label>
+                                <mat-select formControlName="secondary" (selectionChange)="svc.onSecondaryChanged()">
+                                <mat-select-trigger>
+                                        {{ svc.secondaryOptions()[svc.secondary() ?? 0].name }}
+                                    </mat-select-trigger>
+                                    @for(sac of svc.secondaryOptions(); track $index){
+                                        <mat-option [value]="sac.value" > 
+                                            <div class="primary-text">
+                                                {{ sac.name }}
+                                            </div>
+                                            <div class="subtext">
+                                                {{ sac.desc }}
+                                            </div>
+                                        </mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                    } @else if(svc.primary() === 2){
+                        <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
+                        Select a set</span></p>
+                        <app-set-select formControlName="secondary" (selectionChange)="svc.onSecondaryChanged()"></app-set-select>
+                    }
+                </div>
+            }
+
+            @if(svc.tertiaryRequired() && svc.tertiaryRequired() !== 'standard'){
+                <div class="field">
+                @if(svc.primary() === 1) {
+                    <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
+                        Select a set
+                    </span></p>
+                    <app-set-select formControlName="tertiary"></app-set-select>
+                }
+                @else if(svc.tertiaryRequired() === 'block') {
+                    <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
+                        Select a block
+                    </span></p>
+                    <app-set-select formControlName="tertiary" [blockMode]="true"></app-set-select>
+                } @else {
+                }
+                </div>
+            }
+        </div>
+
+        @if(svc.tertiaryRequired() === 'standard'){
+            <div class="form-row">
+                <app-standard-range formControlName="tertiary"></app-standard-range>
+            </div>
+        }
+    </div>
+
+    
+    @if(form.controls.main.valid){
+
+        <div *ngIf="svc.primary() !== 2">
+            @if(svc.primary() === 1){
+                <p>henlo, I am le progression</p>
+            }
+            @else if(svc.primary() === 3){
+                @if(svc.tertiaryRequired() === 'block'){
+                    <h3>Sets in the pool</h3>
+                    <app-set-icon-box 
+                        class="big-field"
+                        [predef]="true" 
+                        [(chosen)]="svc.pool" 
+                        >
+                    </app-set-icon-box>
+                } @else {
+                    <h3>Sets in the pool</h3>
+                    <app-set-icon-box  
+                        class="big-field"
+                        [predef]="true" 
+                        [iePools]="true"
+                        [(chosen)]="svc.pool"
+                        >
+                    </app-set-icon-box>
+                }
+            }
+            @else if(svc.primary() === 4){
+                <h3>Sets in the pool</h3>
+                <app-set-icon-box 
+                    class="big-field"
+                    [(chosen)]="svc.pool"
+                    >
+                </app-set-icon-box>
+            }
+        </div>
+    }
+
+<!--
+        <div class="form-row">
+
+            <section class="field">
+                <h3>Card Pool</h3>
+                <mat-radio-group aria-label="Select an option" formControlName="cardPool">
+                    <ul class="pool-radio">
+                        <li><mat-radio-button value="1" [checked]="true" (change)="poolChange(true)">Acquisition Based</mat-radio-button></li>
+                        <li><mat-radio-button value="2" (change)="poolChange(false)">Full Set Available*</mat-radio-button></li>
+                    </ul>
+                </mat-radio-group>
+            </section>
+
+            <section class="field" formGroupName="exchange">
+                <h3>Trading</h3>
+                <mat-checkbox
+                    [disabled]="form.controls.exchange.disabled"
+                    [checked]="allChecked()"
+                    [indeterminate]="tradingPartial()"
+                    (change)="update($event.checked)">
+                    Allow All Exchanges
+                </mat-checkbox>
+                <ul>
+                    <li>
+                        <mat-checkbox formControlName="tradingPlayers">Allow Trading between players</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox formControlName="tradingBots">Allow Trading with CPUs</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox formControlName="ante">Allow <span class="glossary" matTooltip="Players will be allowed to play for keeps">Ante</span></mat-checkbox>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+        <div class="form-row">
+
+            <section>
+
+            </section>
+
+        </div>
+
+    }
+-->
+    <button type="submit" [disabled]="!form.valid">Submit</button>
+
+</form>
+
+
+<button matButton="tonal" routerLink="/play">Return <mat-icon>keyboard_return</mat-icon></button>

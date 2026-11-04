@@ -8,10 +8,6 @@
     font-size: 0.725em;
 }
 
-.glossary{
-    color: #0ad3d3
-}
-
 // The main row
 
 .form-row {
@@ -29,27 +25,6 @@
   flex-grow: 2;      /* gets twice the extra space, if you want it wider */
 }
 
-.stnd-box {
-  display: flex;
-  flex-grow: 1;
-  gap: 1rem;
-}
-
-.stnd-m, .stnd-d {
-  min-width: 0;
-}
-
-.stnd-m {
-  flex: 1;
-}
-
-.stnd-d {
-  flex: 2;
-}
-
-mat-form-field {
-  width: 100%;       /* fill the wrapper instead of using the 180px default */
-}
 
 // The other 2 sections
 
@@ -63,6 +38,7 @@ ul {
   margin-top: 4px;
 }
 
-.pool-radio {
-    padding-left: 0px;
+button.example-custom-date-class {
+  background: orange;
+  border-radius: 100%;
 }

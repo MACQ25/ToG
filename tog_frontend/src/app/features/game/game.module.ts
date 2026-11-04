@@ -5,25 +5,26 @@ import { SelectComponent } from './select/select.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { SelectRouteToggleComponent } from './select-route-toggle/select-route-toggle.component';
-import { JoinComponent } from './join/join.component';
-import { CreateComponent } from './create/create.component';
+import { SelectRouteToggleComponent } from './select/select-route-toggle/select-route-toggle.component';
+import { JoinComponent } from './select/join/join.component';
+import { CreateComponent } from './select/create/create.component';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SetSelectComponent } from '../../shared/set-select/set-select.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import { SetIconBoxComponent } from '../../shared/set-icon-box/set-icon-box.component';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatDatepickerModule} from '@angular/material/datepicker';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SetIconBoxComponent } from '../../shared/set-icon-box/set-icon-box.component';
+import { SetSelectComponent } from '../../shared/set-select/set-select.component';
+import { PodFormComponent } from './pod-form/pod-form.component';
+import { StandardRangeComponent } from './pod-form/standard-range/standard-range.component';
 
 
 @NgModule({
-  declarations: [SelectComponent, SelectRouteToggleComponent, JoinComponent, CreateComponent],
+  declarations: [SelectComponent, SelectRouteToggleComponent, JoinComponent, CreateComponent, PodFormComponent, StandardRangeComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -32,16 +33,19 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
+    CommonModule,
+    SetIconBoxComponent,
+    SetSelectComponent,
+    ReactiveFormsModule, 
+    MatIconModule,
+    MatTooltipModule,
     MatFormFieldModule, 
     MatInputModule, 
     MatSelectModule, 
-    MatTooltipModule,
-    SetSelectComponent,
-    SetIconBoxComponent,
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatButtonModule
   ]
 })
 export class GameModule { }

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SelectComponent } from './select/select.component';
-import { SelectRouteToggleComponent } from './select-route-toggle/select-route-toggle.component';
-import { CreateComponent } from './create/create.component';
-import { JoinComponent } from './join/join.component';
+import { SelectRouteToggleComponent } from './select/select-route-toggle/select-route-toggle.component';
+import { CreateComponent } from './select/create/create.component';
+import { JoinComponent } from './select/join/join.component';
 import { FormCardUIComponent } from '../../shared/form-card-ui/form-card-ui.component';
 
 const routes: Routes = [

@@ -94,7 +94,12 @@ export class SetsService {
           icon: `${chl.code.toLowerCase()}-icon`,
           releaseDate: set.releaseDate,
           font: set.font
-        }))
+        }));
+
+
+        set.members = set.members.sort((k1: any, k2: any) => k1.releaseDate.localeCompare(k2.releaseDate));
+
+
       }
       return set;
     })

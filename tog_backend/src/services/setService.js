@@ -143,6 +143,7 @@ export async function getAllBlocks(){
                             id: "$data._id",
                             name: "$data.name",
                             code: "$data.code",
+                            releaseDate: "$data.releaseDate"
                         } 
                         },
                         releaseDate: { $min: '$data.releaseDate' }

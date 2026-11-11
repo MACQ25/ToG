@@ -1,0 +1,44 @@
+.chipIcon{
+  margin: auto;
+}
+
+mat-card{
+  flex: 1 1 0;
+}
+
+mat-card.primary{
+  height: 100%;
+}
+
+mat-card-header {
+  padding-bottom: 2vh;
+  flex-direction: row;
+}
+
+.mat-mdc-card-header {
+  align-items: center !important;
+  justify-content: space-between;
+}
+
+.secondaryPanel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease, opacity 300ms ease, padding 500ms ease;
+  padding: 0;
+
+  &.open {
+    max-height: 300vh;
+    opacity: 1;
+    padding: 0px 16px 16px;
+  }
+}
+
+.secondaryBtn {
+  transform: rotate(0deg);
+  transition: transform 100ms ease;
+
+  &.active {
+    transform: rotate(90deg);
+  }
+}

@@ -42,3 +42,16 @@ button.example-custom-date-class {
   background: orange;
   border-radius: 100%;
 }
+
+.sec-select ::ng-deep .mat-mdc-form-field-hint-wrapper {
+  padding: 0px !important;
+  justify-content: flex-end !important;
+}
+
+.sec-select ::ng-deep .mat-mdc-form-field-hint-spacer {
+  flex: 0;
+}
+
+.extras-toggle{
+  align-self: flex-end;
+}

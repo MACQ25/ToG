@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
+import { ChipBlockComponent } from './chip-block/chip-block.component';
 
 
 @Component({
@@ -29,7 +30,8 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatProgressSpinnerModule, 
     SetAutocompleteComponent,
-    MatCardModule
+    MatCardModule,
+    ChipBlockComponent
   ],
   templateUrl: './set-icon-box.component.html',
   styleUrl: './set-icon-box.component.scss',
@@ -40,11 +42,13 @@ export class SetIconBoxComponent {
 
   @ViewChild('auto') autocomplete!: SetAutocompleteComponent
 
-  isLoading = signal<boolean>(true)
+  isLoading = signal<boolean>(true);
 
   predef = input<boolean>(false);
 
-  iePools = input<boolean>(false)
+  blockName = input<any>('');
+
+  iePools = input<boolean>(false);
 
   chosen = model<any>()
 

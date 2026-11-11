@@ -1,7 +1,3 @@
-.chipIcon{
-    margin: auto;
-}
-
 .icons-field{
     width: 100%;
 }
@@ -10,13 +6,17 @@
     display: flex;
     justify-content: space-evenly;
     gap: 2vw;
+    margin-top: 2vh;
 }
 
-.chipPanels mat-card{
+.chipPanels.main app-chip-block {
     flex: 1 1 0;
-    align-items: flex-start;
 }
 
-mat-card-header {
-    padding-bottom: 2vh;
+.chipPanels.secondary {
+    justify-content: flex-start;
+}
+
+.chipPanels.secondary app-chip-block {
+    width: calc(50% - 2vh);
 }

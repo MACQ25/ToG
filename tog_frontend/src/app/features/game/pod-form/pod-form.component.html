@@ -23,7 +23,7 @@
                                 <p>Select a <span class="glossary" matTooltip="You will be then asked for what specific year of the format">'Format'</span></p>
                             }
 
-                            <mat-form-field>
+                            <mat-form-field class="sec-select">
                                 <mat-label>Types</mat-label>
                                 <mat-select formControlName="secondary" (selectionChange)="svc.onSecondaryChanged()">
                                 <mat-select-trigger>
@@ -40,9 +40,16 @@
                                         </mat-option>
                                     }
                                 </mat-select>
+                                @if(svc.primary() === 1){
+                                    <mat-hint class="extras-toggle">
+                                        Show Extras <mat-checkbox [formControl]="svc.progressionExtras"></mat-checkbox>
+                                    </mat-hint>
+                                }
                             </mat-form-field>
 
                         </div>
+     
+                        
                     } @else if(svc.primary() === 2){
                         <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
                         Select a set</span></p>
@@ -81,37 +88,16 @@
     @if(form.controls.main.valid){
 
         <div *ngIf="svc.primary() !== 2">
-            @if(svc.primary() === 1){
-                <p>henlo, I am le progression</p>
-            }
-            @else if(svc.primary() === 3){
-                @if(svc.tertiaryRequired() === 'block'){
-                    <h3>Sets in the pool</h3>
-                    <app-set-icon-box 
-                        class="big-field"
-                        [predef]="true" 
-                        [(chosen)]="svc.pool" 
-                        >
-                    </app-set-icon-box>
-                } @else {
-                    <h3>Sets in the pool</h3>
-                    <app-set-icon-box  
-                        class="big-field"
-                        [predef]="true" 
-                        [iePools]="true"
-                        [(chosen)]="svc.pool"
-                        >
-                    </app-set-icon-box>
-                }
-            }
-            @else if(svc.primary() === 4){
-                <h3>Sets in the pool</h3>
-                <app-set-icon-box 
-                    class="big-field"
-                    [(chosen)]="svc.pool"
-                    >
-                </app-set-icon-box>
-            }
+            <h3>Sets in the pool</h3>
+
+            <app-set-icon-box 
+                class="big-field"
+                [predef]="!(svc.primary() === 4)" 
+                [iePools]="svc.primary() === 1 || svc.tertiaryRequired() === 'standard'"
+                [(chosen)]="svc.pool" 
+                [blockName]="svc.blockName()"
+            >
+            </app-set-icon-box>
         </div>
     }
 

@@ -4,66 +4,39 @@
 @else{
     @if(predef()){
         @if(iePools()){
-            <div class="chipPanels">
+            <div class="chipPanels main">
                 
-                <mat-card appearance="outlined" *ngIf="chosen().justRotated && chosen().justRotated.length > 0">
-                    <mat-card-header>
-                        <mat-card-title>Just Rotated</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-chip-set aria-label="Legal Post Rotation">
-                        @for (set of chosen().justRotated; track set) { 
-                            <mat-chip> 
-                                <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
-                                {{set.name}}
-                            </mat-chip>
-                        }
-                        </mat-chip-set>
-                    </mat-card-content>
-                </mat-card>
+                <app-chip-block 
+                    *ngIf="chosen().justRotated && chosen().justRotated.length > 0"
+                    ariaLabel="Rotated Out" cardTitle="Just Rotated" [chipCollection]="chosen().justRotated">
+                </app-chip-block>
 
-                <mat-card appearance="outlined">
-                    <mat-card-header>
-                        <mat-card-title>Sets Legal</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-chip-set aria-label="Legal Post Rotation">
-                        @for (set of chosen().included; track set) { 
-                            <mat-chip> 
-                                <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
-                                {{set.name}}
-                            </mat-chip>
-                        }
-                        </mat-chip-set>
-                    </mat-card-content>
-                </mat-card>
+                <app-chip-block 
+                    ariaLabel="Legal Post Rotation" cardTitle="Sets Legal" [chipCollection]="chosen().included">
+                </app-chip-block>
 
-                <mat-card appearance="outlined">
-                    <mat-card-header>
-                        <mat-card-title>To Be Released</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-chip-set aria-label="Legal Before Next Rotation">
-                        @for (set of chosen().toRelease; track set) { 
-                            <mat-chip> 
-                                <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
-                                {{set.name}}
-                            </mat-chip>
-                        }
-                        </mat-chip-set>
-                    </mat-card-content>
-                </mat-card>
+                <app-chip-block
+                    ariaLabel="Legal Before Next Rotation" cardTitle="To Be Released" [chipCollection]="chosen().toRelease">
+                </app-chip-block>
+
+            </div>
+
+            <div class="chipPanels secondary">
+                
+                <app-chip-block 
+                    *ngIf="chosen().starterSet && chosen().starterSet.length > 0"
+                    ariaLabel="Starter Sets Released on this time" cardTitle="Starter Sets" [chipCollection]="chosen().starterSet" [isPrimary]="false">
+                </app-chip-block>
+
+                <app-chip-block 
+                    *ngIf="chosen().promo && chosen().promo.length > 0"
+                    ariaLabel="Promos of associated sets" cardTitle="Promos" [chipCollection]="chosen().promo" [isPrimary]="false">
+                </app-chip-block>
+
             </div>
         } 
         @else {
-            <mat-chip-set aria-label="Set collection">
-                @for (set of chosen(); track set) { 
-                    <mat-chip> 
-                        <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
-                        {{set.name}}
-                    </mat-chip>
-                }
-            </mat-chip-set>            
+            <app-chip-block ariaLabel="sets in block" cardTitle="{{blockName()}} block" [chipCollection]="chosen()" ></app-chip-block>
         }
 
     } @else {
@@ -106,4 +79,3 @@
         </mat-form-field>
     }
 }
-

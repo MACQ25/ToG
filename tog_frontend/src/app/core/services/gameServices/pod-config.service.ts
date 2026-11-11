@@ -24,7 +24,7 @@ export class PodConfigService {
       { value: null, name: "Pick one", desc: "" },
       { value: ProgressionStart.OldSchool, name: "old school 93-94", desc: "Start a pod like you are one of the first few to get a hold of alpha and beta, era of moxes and 'the deck'"},
       { value: ProgressionStart.ProTour, name: "PT", desc: "Start progression with the pool of sets featured at the first pro-tour, 4th edition onwards!"},
-      { value: ProgressionStart.Year1999, name: "1999", desc: "The game as it was after Urza block, the later half of premodern, starting at 6th Edition"},
+      { value: ProgressionStart.Year2000, name: "2000", desc: "The game as it was after Urza block, the later half of premodern, starting at 6th Edition"},
       { value: ProgressionStart.Modern, name: "Modern", desc: "The unveiling of a new frame, the starting point of one of magic's most beloved formats"},
       { value: ProgressionStart.SpecificSet, name: "Specific set", desc: "Alright, got nostalgia for a specific set you started with? put it here and run the pod that way"}, 
     ]
@@ -55,7 +55,7 @@ export class PodConfigService {
     tertiaryKindFor(mode: number | null, secondary: number | null): TertiaryKind {
       if (mode === Mode.Progression && secondary === ProgressionStart.SpecificSet) return 'members';
       if (mode === Mode.Constructed && secondary === ConstructedFormat.T2) return 'standard';
-      if (mode === Mode.Constructed && secondary === ConstructedFormat.BlockConstructed) return 'block'; // guess
+      if (mode === Mode.Constructed && secondary === ConstructedFormat.BlockConstructed) return 'block';
       return null;
     }
 

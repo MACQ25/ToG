@@ -9,7 +9,7 @@ export const Mode = {
 } as const;
 
 export const ProgressionStart = {
-  OldSchool: 1, ProTour: 2, Year1999: 3, Modern: 4, SpecificSet: 5,
+  OldSchool: 1, ProTour: 2, Year2000: 3, Modern: 4, SpecificSet: 5,
 } as const;
 
 export const ConstructedFormat = { 
@@ -37,9 +37,9 @@ export interface StandardOptions {
 //  1. an explicit list of sets (form.tertiary.members)
 //  2. a date range to look sets up by (form.tertiary.year / range / options)
 export type Tertiary =
-    | { kind: 'target'; target: Set}
-    | { kind: 'members'; members: Set[] }
-    | { kind: 'standard'; range: number; year: Moment; options: AdvancedStndOptions };
+    | { kind: 'target'; target: Set; }
+    | { kind: 'block'; name: string; members: Set[]; }
+    | { kind: 'standard'; range: number; year: Moment; options: AdvancedStndOptions; };
 
 
 export interface ExchangeOptions {

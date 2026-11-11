@@ -6,6 +6,8 @@ import { PodConfigService } from './pod-config.service';
 import { startWith, switchMap, of, distinctUntilChanged } from 'rxjs';
 import { Tertiary } from './pod-config.model';
 import { Set } from '../../interfaces/set';
+import { Mode, ProgressionStart, ConstructedFormat, TertiaryKind } from './pod-config.model';
+
 
 @Injectable()
 export class PodFormService {
@@ -54,10 +56,15 @@ export class PodFormService {
   // IMPLEMENTATION OF SET POOL BLOCK
 
   private readonly request = computed(() => {
-    let s = this.secondary()
-    if (this.tertiary()?.kind === 'block') return this.tertiary();
-    if (this.tertiary()?.kind === 'standard') return this.tertiary();
-    if (this.primary() === 1 && this.secondary()) return { kind: 'progression', secondary: s, extras: this.extrasMisc() } as const;
+    const sec = this.secondary()
+    const ter = this.tertiary();
+
+    if (ter?.kind === 'block') return ter;
+    if (ter?.kind === 'standard') return ter;
+    if (this.primary() === Mode.Progression && sec) {
+      if (sec !== ProgressionStart.SpecificSet) return { kind: 'progression', secondary: sec, extras: this.extrasMisc() } as const;
+      else if(ter) return { kind: 'target', target: ter } as const;
+    } 
     return { kind: 'empty' } as const;
   });
 
@@ -73,6 +80,9 @@ export class PodFormService {
             return of(r.members as Set[]);
           case 'standard': return this.setServ.listByStandardRotation(r.year, r.range, r.options);
           case 'progression': return this.setServ.listProgressionSet(r.secondary, r.extras);
+          case 'target':
+            console.log(r)
+            return of({included: [r.target]})
           default:     
             return of([] as Set[]);
         }

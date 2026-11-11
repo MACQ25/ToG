@@ -27,12 +27,12 @@ export async function listBlocks(req, res){
 
 export async function listRange(req, res) {
     try {
-        const { date, range, ori, opt } = req.body;
-        console.log(date, range, ori, opt);
+        const { date, range, opt, stnd } = req.body;
+        console.log(date, range, opt, stnd);
 
-        const inRange = await getByRange(date, range, ori, opt)
+        const inRange = await getByRange(date, range, opt, stnd)
 
-        console.log(inRange)
+        //console.log(inRange)
 
         return res.status(200).json(inRange)
 
@@ -67,6 +67,15 @@ export async function iconProxy(req, res) {
         const ares = await axios.get(`https://svgs.scryfall.io/sets/${icon}.svg`, {
             responseType: 'text',
             timeout: 5000,
+        }).catch(async function (error) {
+            let deep = await axios.get(`https://api.scryfall.com/sets/${icon}`, {
+                    responseType: 'json'
+                }
+            )
+            return await axios.get(deep.data.icon_svg_uri, {            
+                responseType: 'text',
+                timeout: 5000,
+            })
         });
 
         // Trying out naive way to remove fill

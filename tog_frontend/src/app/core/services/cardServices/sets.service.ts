@@ -6,6 +6,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { map, Observable, tap, switchMap, forkJoin, catchError, of, ObservableInput, merge } from 'rxjs';
 import { Set } from '../../interfaces/set';
 import { Block } from '../../interfaces/block';
+import { ProgressionStart } from '../gameServices/pod-config.model';
+import moment from 'moment';
 
 
 @Injectable({
@@ -92,7 +94,7 @@ export class SetsService {
           name: chl.name,
           code: chl.code,
           icon: `${chl.code.toLowerCase()}-icon`,
-          releaseDate: set.releaseDate,
+          releaseDate: chl.releaseDate,
           font: set.font
         }));
 
@@ -123,27 +125,74 @@ export class SetsService {
       );
   }
 
-  public listByDateRange(year: any, range: number, rangeStart: boolean = true, options = null): Observable<any> {
+  public listProgressionSet(mode: number, extras: boolean){
+
+    let dParams = {}
+
+    switch(mode){
+      case ProgressionStart.OldSchool:
+            dParams = {
+              date: moment({ year: 1993, month: 7, day: 4 }),
+              range: moment({ year: 1994, month: 11, day: 2 }),
+              opt: { allowMasters: true, allowPromo: extras },
+            } 
+        break;
+      case ProgressionStart.ProTour:
+            dParams = {
+              date: moment({ year: 1995, month: 3, day: 1 }),
+              range: moment({ year: 1999, month: 8, day: 1 }),
+              opt: { allowMasters: true, allowPromo: extras, allowStarter: extras },
+            } 
+        break;
+      case ProgressionStart.Year2000:
+            dParams = {
+              date: moment({ year: 1999, month: 9, day: 3 }),
+              range: moment({ year: 2003, month: 5, day: 26 }),
+              opt: { allowPromo: extras, allowStarter: extras, sixthEd: true },
+            } 
+        break;
+      case ProgressionStart.Modern:
+            dParams = {
+              date: moment({ year: 2003, month: 6, day: 27 }),
+              range: moment({ year: 2011, month: 5, day: 14 }),
+              opt: { allowPromo: extras, allowStarter: extras },
+            } 
+        break;
+    }
+
+    return this.listByRange(dParams)
+  }
+
+  public listByStandardRotation(year: any, range: number, options = null): Observable<any> {
     
     const dParams = {
       date: year,
       range: range,
-      ori: rangeStart,
-      opt: options
+      opt: options,
+      stnd: true
     } 
 
-    return this.http.post<any>(`${environment.apiUrl}/sets/byRange`, dParams)
+    return this.listByRange(dParams);
+
+  }
+
+  private listByRange(params: any){
+    return this.http.post<any>(`${environment.apiUrl}/sets/byRange`, params)
       .pipe(
         switchMap((response: any) => forkJoin(
             {
               included: this.setUpData(response.included),
               toRelease: this.setUpData(response.toRelease),
-              justRotated: response.justRotated ? this.setUpData(response.justRotated) : of(null)
+              justRotated: response.justRotated ? this.setUpData(response.justRotated) : of(null),
+              starterSet: response.starterSet ? this.setUpData(response.starterSet) : of(null),
+              promo: response.promo ? this.setUpData(response.promo) : of(null)
             }
           )
         )
-      );  
+    );  
   }
+
+
   
 
   public setCardList(code: String): Observable<any>{

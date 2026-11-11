@@ -1,13 +1,15 @@
 /** @type {import('mongoose').Model} */
 import { type } from 'os';
 import SetModel from '../models/Set.js';
+import { set } from 'mongoose';
 
 const SetObj = { 
     "data.code": 1, 
     "data.name": 1, 
     "data.block": 1, 
     "data.type": 1, 
-    "data.releaseDate": 1
+    "data.releaseDate": 1,
+    "data.parentCode": 1
 }
 
 
@@ -175,7 +177,7 @@ export async function getAllBlocks(){
 
 }
 
-export async function getByRange(date, range, ori, opt) {
+export async function getByRange(date, range, opt, stnd) {
     try {
 
         const target = new Date(date)
@@ -193,70 +195,106 @@ export async function getByRange(date, range, ori, opt) {
         
         let expansionType = [ "expansion", "core" ]
 
-        if(opt.allowMasters){
-            expansionType.push("masters")
-        }
-
+        if(opt.allowMasters) expansionType.push("masters");
+        if(opt.allowPromo) expansionType.push("promo")
+        if(opt.allowStarter) expansionType.push("starter")
 
         let dateFilter = {
             $gte: [],
             $lt: []
         };
 
-        if(ori) {
-            // this is for the progression one
-        } else {
+        if(stnd) {
             dateFilter = {
                 $gte: `${target.getFullYear() - (range - 1)}-09-01`,
                 $lt: `${target.getFullYear() + 1}-09-01`,
             }
-        }
+        } else {
+            // this is for the progression one
+            const upper = new Date(range)
 
-
-        const sets = await SetModel.find(
-            { 
-                $and: [
-                    {"data.type": { $in: expansionType }},
-                    {"data.isForeignOnly": {$ne: true} }, 
-                    {"data.isOnlineOnly": {$ne: true} } ,
-                    {"data.releaseDate": dateFilter }
-                ] 
-            },
-            SetObj
-        ).sort({ "data.releaseDate": 1 });
-
-        let res = {
-            included: [],
-            toRelease: []
-        }
-
-        sets.forEach((set) => {
-            if(new Date(Date.parse(set.data.releaseDate)).getFullYear() <= Number.parseInt(date)){
-                res.included.push(set);
-            } else res.toRelease.push(set);
-        })
-
-        if(opt.displayRotated) {
-                    
-            const rotationRange = {
-                $gte: `${target.getFullYear() - range}-09-01`,
-                $lt: `${target.getFullYear() - (range - 1)}-09-01`,
+            dateFilter = {
+                $gte: `${target.toISOString().split('T')[0]}`,
+                $lt: `${upper.toISOString().split('T')[0]}`,
             }
-
-            const rotateOut = await SetModel.find(
-                { 
-                    $and: [
-                        {"data.type": { $in: expansionType }},
-                        {"data.isForeignOnly": {$ne: true} }, 
-                        {"data.isOnlineOnly": {$ne: true} } ,
-                        {"data.releaseDate": rotationRange }
-                    ] 
-                },
-                SetObj
-            ).sort({ "data.releaseDate": 1 })
-
-            Object.assign(res, { justRotated: [...rotateOut] })
         }
+
+        let cond = {
+            $and: [
+                {"data.type": { $in: expansionType }},
+                {"data.isForeignOnly": {$ne: true} }, 
+                {"data.isOnlineOnly": {$ne: true} } ,
+                {"data.releaseDate": dateFilter }
+            ] 
+        }
+
+        if(opt.sixthEd) {
+            cond = {
+                $or: [
+                    {"data.code": { $eq: "6ED" }},
+                    cond
+                ]
+            }
+        }
+
+
+        const sets = await SetModel.find( cond, SetObj ).sort({ "data.releaseDate": 1 });
+
+        let res = { included: [], toRelease: [] }
+
+        if(stnd){
+            sets.forEach((set) => {
+                if(new Date(Date.parse(set.data.releaseDate)).getFullYear() <= Number.parseInt(date)){
+                    res.included.push(set);
+                } else res.toRelease.push(set);
+            })
+
+            if(opt.displayRotated) {
+                        
+                const rotationRange = {
+                    $gte: `${target.getFullYear() - range}-09-01`,
+                    $lt: `${target.getFullYear() - (range - 1)}-09-01`,
+                }
+
+                const rotateOut = await SetModel.find(
+                    { 
+                        $and: [
+                            {"data.type": { $in: expansionType }},
+                            {"data.isForeignOnly": {$ne: true} }, 
+                            {"data.isOnlineOnly": {$ne: true} } ,
+                            {"data.releaseDate": rotationRange }
+                        ] 
+                    },
+                    SetObj
+                ).sort({ "data.releaseDate": 1 })
+
+                Object.assign(res, { justRotated: [...rotateOut] })
+            }
+        } else {
+            
+            const [base, starter, promo] = sets.reduce((acc, val, i) => { 
+                const base = sets[i].data.type === "core" || sets[i].data.type === "expansion"  || sets[i].data.type === "masters" 
+                const starter = !base && sets[i].data.type === "starter"
+                acc[base ? 0 : starter ? 1 : 2].push(val);
+                return acc;
+            }, [[], [], []])
+
+
+            res.included = base.slice(0, 4);
+            res.toRelease = base.slice(4);
+
+            if (starter.length > 0 ) Object.assign(res, { starterSet: starter });
+            
+            if (promo.length > 0 ) {
+                let alt_promo = promo.map((ent) => {
+                    ent.data.code = ent.data.parentCode ?? ent.data.code;
+                    return ent
+                })
+                Object.assign(res, { promo: alt_promo })
+            };
+
+        }
+
 
         return res;
     } catch (error) {

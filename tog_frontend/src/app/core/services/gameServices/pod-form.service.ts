@@ -1,9 +1,9 @@
 import { computed, effect, inject, Injectable, linkedSignal, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { SetsService } from '../cardServices/sets.service';
 import { PodConfigService } from './pod-config.service';
-import { startWith, switchMap, of } from 'rxjs';
+import { startWith, switchMap, of, distinctUntilChanged } from 'rxjs';
 import { Tertiary } from './pod-config.model';
 import { Set } from '../../interfaces/set';
 
@@ -28,11 +28,12 @@ export class PodFormService {
 
   private main = this.form.controls.main.controls;
 
-  readonly primary = toSignal(this.form.controls.main.controls.primary.valueChanges,
-                             { initialValue: null });
-  readonly secondary = toSignal(this.form.controls.main.controls.secondary.valueChanges,
-                             { initialValue: null })
+  progressionExtras = new FormControl(null as boolean | null)
 
+  readonly primary = toSignal(this.main.primary.valueChanges, { initialValue: null });
+  readonly secondary = toSignal(this.main.secondary.valueChanges, { initialValue: null });
+  readonly tertiary = toSignal(this.main.tertiary.valueChanges, { initialValue: null });
+  readonly extrasMisc = toSignal(this.progressionExtras.valueChanges, { initialValue: null });
 
   readonly primaryOptions = this.pcs.modes;
   readonly secondaryOptions = computed(() => this.pcs.MODE_RULES[this.primary() ?? 0]?.options(this.pcs) ?? []);
@@ -52,24 +53,34 @@ export class PodFormService {
 
   // IMPLEMENTATION OF SET POOL BLOCK
 
+  private readonly request = computed(() => {
+    let s = this.secondary()
+    if (this.tertiary()?.kind === 'block') return this.tertiary();
+    if (this.tertiary()?.kind === 'standard') return this.tertiary();
+    if (this.primary() === 1 && this.secondary()) return { kind: 'progression', secondary: s, extras: this.extrasMisc() } as const;
+    return { kind: 'empty' } as const;
+  });
+
+  blockName = signal<string>('');
+
   chosen = toSignal(
-    this.form.controls.main.valueChanges.pipe(
-      switchMap((form: any) => {
-        //console.log(form)
-        if (form.tertiary?.members) return of(form.tertiary.members);
-
-        if (form.tertiary?.year) {
-          const { year, range, options } = form.tertiary;
-          return this.setServ.listByDateRange(year, range, false, options);
+    toObservable(this.request).pipe(
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      switchMap((r: any) => {
+        switch (r.kind) {
+          case 'block':
+            this.blockName.set(r.name);
+            return of(r.members as Set[]);
+          case 'standard': return this.setServ.listByStandardRotation(r.year, r.range, r.options);
+          case 'progression': return this.setServ.listProgressionSet(r.secondary, r.extras);
+          default:     
+            return of([] as Set[]);
         }
-
-        let toEdit: Set[] = []
-
-        return of(toEdit);
       })
     ),
-    { initialValue: [] }
+    { initialValue: [] as Set[] }
   );
+
 
   pool = linkedSignal(() => this.chosen());
 

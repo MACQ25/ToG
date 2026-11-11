@@ -10,6 +10,7 @@ import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-i
 import { MatButtonModule } from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SetAutocompleteComponent } from '../set-autocomplete/set-autocomplete.component';
+import { Block } from '../../core/interfaces/block';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class SetSelectComponent implements ControlValueAccessor {
 
   @ViewChild('auto') autocomplete!: SetAutocompleteComponent
 
-  setSelectField = new FormControl<string | Set>('');
+  setSelectField = new FormControl<string | Set | Block>('');
   onChange: any = () => {};
   onTouched: any = () => {};
   
@@ -74,7 +75,11 @@ export class SetSelectComponent implements ControlValueAccessor {
       .pipe(takeUntilDestroyed())
       .subscribe(v => {
         if (this.writing) return;  // don't echo writeValue back up
-        this.onChange(v && typeof v === 'object' ? v : null);
+        this.onChange(
+          (v && typeof v === 'object') ? 
+            this.blockMode() && 'members' in v ? { kind: 'block', name: v.name, members: v.members } : 
+              v : null 
+        );
       });
   }
 
@@ -97,3 +102,9 @@ export class SetSelectComponent implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void { this.isDisabled.set(isDisabled) }
 
 }
+
+/*
+    this.setSelectField.setValue(
+      obj && this.blockMode() && 'members' in obj ? { kind: 'block', members: (obj?.members ?? []) } : obj ?? ''
+    );
+*/

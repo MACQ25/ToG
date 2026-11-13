@@ -4,13 +4,46 @@
         <button matIconButton *ngIf="!isPrimary()" (click)="showPanel.set(!showPanel())" class="secondaryBtn" [class.active]="showPanel()" > <mat-icon>keyboard_arrow_right</mat-icon> </button>
     </mat-card-header>
     <mat-card-content [class.secondaryPanel]="!isPrimary()" [class.open]="showPanel() || isPrimary()">
-        <mat-chip-set aria-label="{{ariaLabel()}}">
-            @for (set of chipCollection(); track set.id) { 
-                <mat-chip> 
+        <mat-chip-set 
+            aria-label="{{ariaLabel()}}"
+            cdkDropList
+            [id]="cardTitle()"
+            cdkDropListOrientation="mixed"
+            (cdkDropListDropped)="drop($event)"
+        >
+            
+            @for(set of chipCollection(); track set.id; let i = $index) { 
+                <mat-chip 
+                    [class.ieCandidate]="isIEpool()" 
+                    [class.overflowHidden]="!showAll() && (i > 8)"
+                    cdkDrag
+                    (cdkDragStarted)="dragging.set(true)"
+                    (cdkDragEnded)="dragging.set(false)"
+                    [cdkDragData]="set.id"
+                    [cdkDragDisabled]="!isPrimary()"
+                    > 
                     <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
-                    {{set.name}}
+                    {{set.name}}                    
+                    
+                    @if(isIEpool()){
+                        <button                   
+                            type="button" 
+                            [class.overflowHidden]="dragging()"
+                            (click)="changePool(i)"
+                            (mousedown)="$event.stopPropagation()">
+                            <mat-icon class="changeIcon">swap_horiz</mat-icon>
+                        </button>
+                    }
                 </mat-chip>
             }
+            @if(chipCollection()!.length > 8 && !dragging()){
+                @if(showAll()){
+                    <mat-chip (click)="showAll.set(!showAll())"><mat-icon class="soloIcon">visibility_off</mat-icon></mat-chip>
+                }@else {
+                    <mat-chip (click)="showAll.set(!showAll())">...</mat-chip>
+                }
+            }   
+
         </mat-chip-set>                      
     </mat-card-content>
 </mat-card>

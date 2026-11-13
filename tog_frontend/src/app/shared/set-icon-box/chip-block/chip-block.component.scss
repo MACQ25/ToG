@@ -42,3 +42,49 @@ mat-card-header {
     transform: rotate(90deg);
   }
 }
+
+.ieCandidate button {
+  position: absolute;
+  padding: 4px 20px 2px 6px;
+  left: 100%;
+  top: 0%;
+  background: transparent;
+  border: none;
+}
+
+.ieCandidate button::before {
+  content: "";
+  position: absolute;
+  inset: -5px; /* slight overhang so blur doesn't leave a hard edge */
+  background: #0ad3d3;
+  filter: blur(10px);
+  border-radius: 12px;
+}
+
+.ieCandidate  {
+  overflow: hidden;
+  position: relative;
+  
+  &:hover button{
+    transition: left 150ms ease;
+    left: calc(90% - 1.5cqw);
+  }
+}
+
+.overflowHidden {
+  display: none;
+}
+
+.ieCandidate.overflowHidden button::before {
+  visibility: none;
+}
+
+.changeIcon {
+  position: relative;
+  z-index: 1;
+}
+
+.soloIcon {
+  margin-top: 4px;
+}
+

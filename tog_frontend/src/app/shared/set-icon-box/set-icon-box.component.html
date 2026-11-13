@@ -4,7 +4,7 @@
 @else{
     @if(predef()){
         @if(iePools()){
-            <div class="chipPanels main">
+            <div class="chipPanels main" cdkDropListGroup>
                 
                 <app-chip-block 
                     *ngIf="chosen().justRotated && chosen().justRotated.length > 0"
@@ -12,11 +12,19 @@
                 </app-chip-block>
 
                 <app-chip-block 
-                    ariaLabel="Legal Post Rotation" cardTitle="Sets Legal" [chipCollection]="chosen().included">
+                    ariaLabel="Legal Post Rotation" cardTitle="Sets Legal" 
+                    [chipCollection]="chosen().included" [isIEpool]="iePools()"
+                    [alternateList]="chosen().toRelease"
+                    (chipMoved)="move($event)"
+                    >
                 </app-chip-block>
 
                 <app-chip-block
-                    ariaLabel="Legal Before Next Rotation" cardTitle="To Be Released" [chipCollection]="chosen().toRelease">
+                    ariaLabel="Legal Before Next Rotation" cardTitle="To Be Released" 
+                    [chipCollection]="chosen().toRelease" [isIEpool]="iePools()"
+                    [alternateList]="chosen().included"
+                    (chipMoved)="move($event)"
+                    >
                 </app-chip-block>
 
             </div>

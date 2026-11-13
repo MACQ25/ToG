@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { ChipBlockComponent } from './chip-block/chip-block.component';
+import { CdkDropListGroup } from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -31,7 +32,8 @@ import { ChipBlockComponent } from './chip-block/chip-block.component';
     MatProgressSpinnerModule, 
     SetAutocompleteComponent,
     MatCardModule,
-    ChipBlockComponent
+    ChipBlockComponent,
+    CdkDropListGroup
   ],
   templateUrl: './set-icon-box.component.html',
   styleUrl: './set-icon-box.component.scss',
@@ -105,6 +107,45 @@ export class SetIconBoxComponent {
     if (value) {
       this.chosen.update(sets => [...sets, value]);
     }
+  }
+
+  move(event: any){
+    console.log(event)
+    const data = this.chosen()
+    let ori: Set[];
+    let k1 = '';
+    let tar: Set[];
+    let k2 = '';
+ 
+    switch(event.fromId.toString().toLowerCase()){
+      case 'sets legal':
+        k1 = 'included'; ori = data.included; break;
+      case 'to be released':
+        k1 = 'toRelease'; ori = data.toRelease; break;
+      default:
+        ori = [] as Set[]
+    }
+
+    switch(event.toId.toString().toLowerCase()){
+      case 'sets legal':
+        k2 = 'included'; tar = data.included; break;
+      case 'to be released':
+        k2 = 'toRelease'; tar = data.toRelease; break;
+      default:
+        tar = [] as Set[]
+    }
+    
+
+
+    tar.splice(event.currentIndex, 0, ori.splice(event.previousIndex, 1)[0])
+
+    this.chosen.update((slf) => {
+      slf[k1] = ori;
+      slf[k2] = tar;
+      return slf;
+    })
+
+
   }
 
 }

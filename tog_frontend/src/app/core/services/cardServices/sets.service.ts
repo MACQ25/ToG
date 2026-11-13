@@ -125,7 +125,7 @@ export class SetsService {
       );
   }
 
-  public listProgressionSet(mode: number, extras: boolean){
+  public listProgressionSet(mode: number, extras: boolean, refTarget?: Set){
 
     let dParams = {}
 
@@ -158,6 +158,13 @@ export class SetsService {
               opt: { allowPromo: extras, allowStarter: extras },
             } 
         break;
+      case ProgressionStart.SpecificSet:
+            dParams = {
+              date: moment(refTarget?.releaseDate, 'YYYY-MM-DD'),
+              range: moment(refTarget?.releaseDate, 'YYYY-MM-DD').add(2, 'year'),
+              opt: { customStart: true, allowMasters: true, allowPromo: extras, allowStarter: extras },
+            }
+        break;
     }
 
     return this.listByRange(dParams)
@@ -181,8 +188,8 @@ export class SetsService {
       .pipe(
         switchMap((response: any) => forkJoin(
             {
-              included: this.setUpData(response.included),
-              toRelease: this.setUpData(response.toRelease),
+              included: response.included && response.included.length > 0 ? this.setUpData(response.included) : of([] as Set[]),
+              toRelease: response.toRelease ? this.setUpData(response.toRelease) : of([] as Set[]),
               justRotated: response.justRotated ? this.setUpData(response.justRotated) : of(null),
               starterSet: response.starterSet ? this.setUpData(response.starterSet) : of(null),
               promo: response.promo ? this.setUpData(response.promo) : of(null)

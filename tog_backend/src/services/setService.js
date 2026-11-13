@@ -279,9 +279,13 @@ export async function getByRange(date, range, opt, stnd) {
                 return acc;
             }, [[], [], []])
 
+            if(opt.customStart){
+                res.toRelease = base.slice(1);
+            } else {
+                res.included = base.slice(0, 4);
+                res.toRelease = base.slice(4);                
+            }
 
-            res.included = base.slice(0, 4);
-            res.toRelease = base.slice(4);
 
             if (starter.length > 0 ) Object.assign(res, { starterSet: starter });
             

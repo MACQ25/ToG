@@ -81,8 +81,7 @@ export class PodFormService {
           case 'standard': return this.setServ.listByStandardRotation(r.year, r.range, r.options);
           case 'progression': return this.setServ.listProgressionSet(r.secondary, r.extras);
           case 'target':
-            console.log(r)
-            return of({included: [r.target]})
+            return this.setServ.listProgressionSet(5, r.extras, r.target)
           default:     
             return of([] as Set[]);
         }

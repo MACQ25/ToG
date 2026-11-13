@@ -64,7 +64,7 @@ export class PodFormComponent {
 
 
   onSubmit(){
-    console.log(this.form ) //this.pool()
+    console.log(this.form, this.svc.pool() ) //this.pool()
   }
 
 }

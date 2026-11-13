@@ -20,7 +20,7 @@
                     (cdkDragStarted)="dragging.set(true)"
                     (cdkDragEnded)="dragging.set(false)"
                     [cdkDragData]="set.id"
-                    [cdkDragDisabled]="!isPrimary()"
+                    [cdkDragDisabled]="!isPrimary() || !isIEpool()"
                     > 
                     <mat-icon [svgIcon]="set.icon" matChipAvatar></mat-icon>
                     {{set.name}}                    

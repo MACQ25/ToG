@@ -50,6 +50,8 @@ export class SetIconBoxComponent {
 
   blockName = input<any>('');
 
+  mPools = input<boolean>(false);
+
   iePools = input<boolean>(false);
 
   chosen = model<any>()
@@ -110,7 +112,7 @@ export class SetIconBoxComponent {
   }
 
   move(event: any){
-    console.log(event)
+    
     const data = this.chosen()
     let ori: Set[];
     let k1 = '';

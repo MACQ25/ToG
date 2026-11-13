@@ -93,7 +93,8 @@
             <app-set-icon-box 
                 class="big-field"
                 [predef]="!(svc.primary() === 4)" 
-                [iePools]="svc.primary() === 1 || svc.tertiaryRequired() === 'standard'"
+                [mPools]="svc.primary() === 1 || svc.tertiaryRequired() === 'standard'"
+                [iePools]="svc.primary() === 1"
                 [(chosen)]="svc.pool" 
                 [blockName]="svc.blockName()"
             >

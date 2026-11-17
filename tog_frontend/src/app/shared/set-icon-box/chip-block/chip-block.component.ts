@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, input, Input, linkedSignal, model, output, signal } from '@angular/core';
+import { booleanAttribute, Component, computed, input, Input, linkedSignal, model, output, signal } from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -31,7 +31,9 @@ export class ChipBlockComponent {
   chipMoved = output<any>();
 
   chipCollection = model<any>();
-
+  collectionDisplay = computed(() => {
+     return (this.collectionId() ? this.chipCollection()[this.collectionId()] : this.chipCollection())
+  })
 
   changePool(i: number){
     this.chipMoved.emit({

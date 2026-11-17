@@ -12,10 +12,10 @@
             (cdkDropListDropped)="drop($event)"
         >
             
-            @for(set of (collectionId() ? chipCollection()[collectionId()] : chipCollection()); track set.id; let i = $index) { 
+            @for(set of collectionDisplay(); track set.id; let i = $index) { 
                 <mat-chip 
                     [class.ieCandidate]="isIEpool()" 
-                    [class.overflowHidden]="!showAll() && (i > 8)"
+                    [class.overflowHidden]="!showAll() && (i >= 8)"
                     cdkDrag
                     (cdkDragStarted)="dragging.set(true)"
                     (cdkDragEnded)="dragging.set(false)"
@@ -36,7 +36,7 @@
                     }
                 </mat-chip>
             }
-            @if(chipCollection()!.length > 8 && !dragging()){
+            @if(collectionDisplay().length > 8 && !dragging()){
                 @if(showAll()){
                     <mat-chip (click)="showAll.set(!showAll())"><mat-icon class="soloIcon">visibility_off</mat-icon></mat-chip>
                 }@else {

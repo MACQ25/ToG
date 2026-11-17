@@ -7,12 +7,12 @@
         <mat-chip-set 
             aria-label="{{ariaLabel()}}"
             cdkDropList
-            [id]="cardTitle()"
+            [id]="collectionId()"
             cdkDropListOrientation="mixed"
             (cdkDropListDropped)="drop($event)"
         >
             
-            @for(set of chipCollection(); track set.id; let i = $index) { 
+            @for(set of (collectionId() ? chipCollection()[collectionId()] : chipCollection()); track set.id; let i = $index) { 
                 <mat-chip 
                     [class.ieCandidate]="isIEpool()" 
                     [class.overflowHidden]="!showAll() && (i > 8)"

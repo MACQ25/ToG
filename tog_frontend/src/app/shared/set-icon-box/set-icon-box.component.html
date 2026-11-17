@@ -8,25 +8,25 @@
                 
                 <app-chip-block 
                     *ngIf="chosen().justRotated && chosen().justRotated.length > 0"
-                    ariaLabel="Rotated Out" cardTitle="Just Rotated" [chipCollection]="chosen().justRotated">
+                    ariaLabel="Rotated Out" cardTitle="Just Rotated" collectionId="justRotated" [chipCollection]="chosen()">
                 </app-chip-block>
 
                 <app-chip-block 
                     ariaLabel="Legal Post Rotation" 
-                    cardTitle="Sets Legal" 
-                    [chipCollection]="chosen().included" 
+                    cardTitle="Sets Legal"
+                    collectionId="included" 
+                    [chipCollection]="chosen()" 
                     [isIEpool]="iePools() "
-                    [alternateList]="chosen().toRelease"
                     (chipMoved)="move($event)"
                     >
                 </app-chip-block>
 
                 <app-chip-block
                     ariaLabel="Legal Before Next Rotation" 
-                    cardTitle="To Be Released" 
-                    [chipCollection]="chosen().toRelease" 
+                    cardTitle="To Be Released"
+                    collectionId="toRelease"  
+                    [chipCollection]="chosen()" 
                     [isIEpool]="iePools()"
-                    [alternateList]="chosen().included"
                     (chipMoved)="move($event)"
                     >
                 </app-chip-block>
@@ -37,12 +37,12 @@
                 
                 <app-chip-block 
                     *ngIf="chosen().starterSet && chosen().starterSet.length > 0"
-                    ariaLabel="Starter Sets Released on this time" cardTitle="Starter Sets" [chipCollection]="chosen().starterSet" [isPrimary]="false">
+                    ariaLabel="Starter Sets Released on this time" cardTitle="Starter Sets" collectionId="starterSet" [chipCollection]="chosen()" [isPrimary]="false">
                 </app-chip-block>
 
                 <app-chip-block 
                     *ngIf="chosen().promo && chosen().promo.length > 0"
-                    ariaLabel="Promos of associated sets" cardTitle="Promos" [chipCollection]="chosen().promo" [isPrimary]="false">
+                    ariaLabel="Promos of associated sets" cardTitle="Promos" collectionId="promo" [chipCollection]="chosen()" [isPrimary]="false">
                 </app-chip-block>
 
             </div>

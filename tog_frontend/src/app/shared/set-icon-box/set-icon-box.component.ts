@@ -15,7 +15,7 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
 import { MatCardModule } from '@angular/material/card';
 import { ChipBlockComponent } from './chip-block/chip-block.component';
 import { CdkDropListGroup } from '@angular/cdk/drag-drop';
-
+import { switchChip, dragChip} from './switchChip';
 
 @Component({
   selector: 'app-set-icon-box',
@@ -111,43 +111,29 @@ export class SetIconBoxComponent {
     }
   }
 
-  move(event: any){
-    
-    const data = this.chosen()
-    let ori: Set[];
-    let k1 = '';
-    let tar: Set[];
-    let k2 = '';
- 
-    switch(event.fromId.toString().toLowerCase()){
-      case 'sets legal':
-        k1 = 'included'; ori = data.included; break;
-      case 'to be released':
-        k1 = 'toRelease'; ori = data.toRelease; break;
-      default:
-        ori = [] as Set[]
-    }
-
-    switch(event.toId.toString().toLowerCase()){
-      case 'sets legal':
-        k2 = 'included'; tar = data.included; break;
-      case 'to be released':
-        k2 = 'toRelease'; tar = data.toRelease; break;
-      default:
-        tar = [] as Set[]
-    }
-    
-
-
-    tar.splice(event.currentIndex, 0, ori.splice(event.previousIndex, 1)[0])
+  move(event: switchChip | dragChip){
 
     this.chosen.update((slf) => {
-      slf[k1] = ori;
-      slf[k2] = tar;
+      let ori: Set[] = slf[event.fromId];
+      let tar: Set[];
+
+      let toId;  
+
+      if('toId' in event){
+        toId = event.toId
+      } else toId = event.fromId === 'included' ? 'toRelease' : 'included' 
+
+      tar = slf[toId];
+
+      let elem = ori.splice(event.previousIndex, 1)[0]
+
+      if('toId' in event) tar.splice(event.currentIndex, 0, elem);
+      else tar.push(elem);
+
+      slf[event.fromId] = ori;
+      slf[toId] = tar;
       return slf;
-    })
-
-
+    });
   }
 
 }

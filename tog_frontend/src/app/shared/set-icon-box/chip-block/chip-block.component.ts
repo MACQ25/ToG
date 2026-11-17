@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { Set } from '../../../core/interfaces/set';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { switchChip, dragChip } from '../switchChip';
+
 
 @Component({
   selector: 'app-chip-block',
@@ -18,31 +20,31 @@ export class ChipBlockComponent {
  
   ariaLabel = input.required<string>();
   cardTitle = input.required<string>();
-  isPrimary = input<boolean>(true);
+  collectionId = input<string>('');
   isIEpool = input(false, { transform: booleanAttribute });
+  
+  isPrimary = input<boolean>(true);
   showPanel = signal<boolean>(false);
-  chipCollection = model<Set[]>();
-  alternateList = model<Set[]>();
   showAll = signal<boolean>(false);
   dragging = signal<boolean>(false);
+
   chipMoved = output<any>();
+
+  chipCollection = model<any>();
 
 
   changePool(i: number){
-    const addition: Set = this.chipCollection()?.splice(i, 1)[0]!
-    this.alternateList.update(
-      (val: Set[] | undefined) => {
-         val?.push(addition); 
-         return val
-        }
-      );
+    this.chipMoved.emit({
+      fromId: this.collectionId(),
+      previousIndex: i,
+    });
   }
 
   drop(event:any) {
     if (event.previousContainer === event.container) {
-      this.chipCollection.update((set: any) => {
-        moveItemInArray(set, event.previousIndex, event.currentIndex);
-        return [...set];
+      this.chipCollection.update((coll: any) => {
+        moveItemInArray(coll[this.collectionId()], event.previousIndex, event.currentIndex);
+        return coll;
       });
     } else {
       this.chipMoved.emit({
@@ -50,7 +52,7 @@ export class ChipBlockComponent {
         toId: event.container.id,
         previousIndex: event.previousIndex,
         currentIndex: event.currentIndex,
-        set: event.item.data,
+        data: event.item.data,
       });
     }
   }

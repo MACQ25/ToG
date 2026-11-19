@@ -20,12 +20,7 @@ export class PodFormService {
       secondary: new FormControl(null as number | null,),
       tertiary: new FormControl(null as Tertiary | null),
     }),
-    cardPool: new FormControl(1, [Validators.required]),
-    exchange: new FormGroup({
-      tradingPlayers: new FormControl(false, [Validators.required]),
-      tradingBots: new FormControl(false, [Validators.required]),
-      ante: new FormControl(false, [Validators.required])
-    })
+    configs: new FormControl()
   });
 
   private main = this.form.controls.main.controls;
@@ -43,7 +38,7 @@ export class PodFormService {
 
 
   constructor(private setServ: SetsService) {
-    effect(() => setRequired(this.main.secondary, this.secondaryOptions().length > 0));
+    effect(() => setRequired(this.main.secondary, this.primary() !== Mode.Custom));
     effect(() => setRequired(this.main.tertiary, this.tertiaryRequired() !== null ));
   }
 

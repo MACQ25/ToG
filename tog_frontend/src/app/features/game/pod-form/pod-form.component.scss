@@ -8,6 +8,11 @@
     font-size: 0.725em;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+}
+
 // The main row
 
 .form-row {
@@ -16,31 +21,12 @@
   gap: 1rem;
 }
 
-.field {
-  flex: 1;   /* basis is a preferred size, not a minimum */
-}
-
-.big-field {
-  flex: 2 1 10rem;
-  flex-grow: 2;      /* gets twice the extra space, if you want it wider */
-}
-
 
 // The other 2 sections
 
 
 #to-mod .mat-mdc-form-field{
     min-width: 20rem;
-}
-
-ul {
-  list-style-type: none;
-  margin-top: 4px;
-}
-
-button.example-custom-date-class {
-  background: orange;
-  border-radius: 100%;
 }
 
 .sec-select ::ng-deep .mat-mdc-form-field-hint-wrapper {
@@ -55,3 +41,10 @@ button.example-custom-date-class {
 .extras-toggle{
   align-self: flex-end;
 }
+
+//submit button
+
+.submit-container {
+  display: flex;
+  justify-content: flex-end;
+} 

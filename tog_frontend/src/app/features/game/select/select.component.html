@@ -1,13 +1,19 @@
 
 <mat-card class="card" appearance="outlined">
-    <mat-card-header>
+    <mat-card-header class="header">
         <mat-card-title>A gathering awaits</mat-card-title>
+        @if(!inMain) { <button matButton="tonal" routerLink="/play">Return <mat-icon>keyboard_return</mat-icon></button> }
     </mat-card-header>
     <div class="divider-spacing">
         <mat-divider></mat-divider>
     </div>
     <mat-card-content>
-        
+        @if(inMain) {
+            <div class="init">
+                <button matButton="filled" routerLink="/play/enter/create">Create</button>
+                <button matButton="outlined" routerLink="/play/enter/join">Join</button>
+            </div>
+        }
         <router-outlet/>
 
     </mat-card-content>

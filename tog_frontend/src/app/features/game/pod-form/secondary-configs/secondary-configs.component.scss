@@ -1,0 +1,15 @@
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.form-row section{
+  flex: 1;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}

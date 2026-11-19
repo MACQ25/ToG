@@ -5,6 +5,19 @@
   max-height: 100%;
 }
 
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5dvw;
+}
+
 .divider-spacing{
   margin: 20px 0px;
+}
+
+.init {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

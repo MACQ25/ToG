@@ -1,0 +1,44 @@
+<div [formGroup]="configs">
+    <div class="form-row">
+        <section>
+            <h3>Card Pool</h3>
+            <mat-radio-group aria-label="Select an option" formControlName="cardPool">
+                <ul class="pool-radio">
+                    <li><mat-radio-button value="1" [checked]="true" (change)="poolChange(true)">Acquisition Based</mat-radio-button></li>
+                    <li><mat-radio-button value="2" (change)="poolChange(false)">Full Set Available*</mat-radio-button></li>
+                </ul>
+            </mat-radio-group>
+        </section>
+
+        <section formGroupName="exchange">
+            <h3>Trading</h3>
+            <mat-checkbox
+                [disabled]="configs.controls.exchange.disabled"
+                [checked]="allChecked()"
+                [indeterminate]="tradingPartial()"
+                (change)="update($event.checked)">
+                Allow All Exchanges
+            </mat-checkbox>
+            <ul>
+                <li>
+                    <mat-checkbox formControlName="tradingPlayers">Allow Trading between players</mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox formControlName="tradingBots">Allow Trading with CPUs</mat-checkbox>
+                </li>
+                <li>
+                    <mat-checkbox formControlName="ante">Allow <span class="glossary" matTooltip="Players will be allowed to play for keeps">Ante</span></mat-checkbox>
+                </li>
+            </ul>
+        </section>
+
+    </div>
+
+    <div class="form-row">
+
+        <section>
+
+        </section>
+
+    </div>
+</div>

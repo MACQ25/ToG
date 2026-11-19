@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div formGroupName="main">
         <div class="form-row">
-            <div class="field">
+            <div>
                 <p>Enter the format</p>
                 <mat-form-field >
                     <mat-label>Format</mat-label>
@@ -14,7 +14,7 @@
             </div>
             
             @if(svc.primary()){
-                <div class="big-field">
+                <div>
                     @if(svc.primary() === 1 || svc.primary() === 3){
                         <div id="to-mod">
                             @if(svc.primary() === 1) {
@@ -46,10 +46,8 @@
                                     </mat-hint>
                                 }
                             </mat-form-field>
-
                         </div>
      
-                        
                     } @else if(svc.primary() === 2){
                         <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
                         Select a set</span></p>
@@ -59,7 +57,7 @@
             }
 
             @if(svc.tertiaryRequired() && svc.tertiaryRequired() !== 'standard'){
-                <div class="field">
+                <div>
                 @if(svc.primary() === 1) {
                     <p><span class="glossary" matTooltip="Additional customization will be shown after selection">
                         Select a set
@@ -71,7 +69,6 @@
                         Select a block
                     </span></p>
                     <app-set-select formControlName="tertiary" [blockMode]="true"></app-set-select>
-                } @else {
                 }
                 </div>
             }
@@ -83,75 +80,22 @@
             </div>
         }
     </div>
-
     
     @if(form.controls.main.valid){
-
-        <div *ngIf="svc.primary() !== 2">
+        <div *ngIf="svc.primary() !== 2" >
             <h3>Sets in the pool</h3>
-
             <app-set-icon-box 
-                class="big-field"
                 [predef]="!(svc.primary() === 4)" 
                 [mPools]="svc.primary() === 1 || svc.tertiaryRequired() === 'standard'"
                 [iePools]="svc.primary() === 1"
                 [(chosen)]="svc.pool" 
-                [blockName]="svc.blockName()"
-            >
+                [blockName]="svc.blockName()">
             </app-set-icon-box>
         </div>
+
+        <app-secondary-configs formControlName="configs"></app-secondary-configs>
     }
-
-<!--
-        <div class="form-row">
-
-            <section class="field">
-                <h3>Card Pool</h3>
-                <mat-radio-group aria-label="Select an option" formControlName="cardPool">
-                    <ul class="pool-radio">
-                        <li><mat-radio-button value="1" [checked]="true" (change)="poolChange(true)">Acquisition Based</mat-radio-button></li>
-                        <li><mat-radio-button value="2" (change)="poolChange(false)">Full Set Available*</mat-radio-button></li>
-                    </ul>
-                </mat-radio-group>
-            </section>
-
-            <section class="field" formGroupName="exchange">
-                <h3>Trading</h3>
-                <mat-checkbox
-                    [disabled]="form.controls.exchange.disabled"
-                    [checked]="allChecked()"
-                    [indeterminate]="tradingPartial()"
-                    (change)="update($event.checked)">
-                    Allow All Exchanges
-                </mat-checkbox>
-                <ul>
-                    <li>
-                        <mat-checkbox formControlName="tradingPlayers">Allow Trading between players</mat-checkbox>
-                    </li>
-                    <li>
-                        <mat-checkbox formControlName="tradingBots">Allow Trading with CPUs</mat-checkbox>
-                    </li>
-                    <li>
-                        <mat-checkbox formControlName="ante">Allow <span class="glossary" matTooltip="Players will be allowed to play for keeps">Ante</span></mat-checkbox>
-                    </li>
-                </ul>
-            </section>
-
-        </div>
-
-        <div class="form-row">
-
-            <section>
-
-            </section>
-
-        </div>
-
-    }
--->
-    <button type="submit" [disabled]="!form.valid">Submit</button>
-
+    <div class="submit-container">
+        <button type="submit" [disabled]="!form.valid" [matButton]="!form.valid ? 'outlined' : 'filled' ">Submit</button>
+    </div>
 </form>
-
-
-<button matButton="tonal" routerLink="/play">Return <mat-icon>keyboard_return</mat-icon></button>

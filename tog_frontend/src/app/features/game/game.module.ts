@@ -5,7 +5,6 @@ import { SelectComponent } from './select/select.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { SelectRouteToggleComponent } from './select/select-route-toggle/select-route-toggle.component';
 import { JoinComponent } from './select/join/join.component';
 import { CreateComponent } from './select/create/create.component';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
@@ -21,10 +20,11 @@ import { SetIconBoxComponent } from '../../shared/set-icon-box/set-icon-box.comp
 import { SetSelectComponent } from '../../shared/set-select/set-select.component';
 import { PodFormComponent } from './pod-form/pod-form.component';
 import { StandardRangeComponent } from './pod-form/standard-range/standard-range.component';
+import { SecondaryConfigsComponent } from './pod-form/secondary-configs/secondary-configs.component';
 
 
 @NgModule({
-  declarations: [SelectComponent, SelectRouteToggleComponent, JoinComponent, CreateComponent, PodFormComponent, StandardRangeComponent],
+  declarations: [SelectComponent, JoinComponent, CreateComponent, PodFormComponent, StandardRangeComponent, SecondaryConfigsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
